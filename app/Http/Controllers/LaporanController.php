@@ -31,10 +31,11 @@ class LaporanController extends Controller
     if ($request->filled('tanggal_sampai')) {
         $query->whereDate('tanggal', '<=', $request->tanggal_sampai);
     }
-
+// Pagination dengan 50 item per halaman    
     $monitorings = $query
-        ->orderBy('tanggal', 'desc')
-        ->get();
+    ->orderBy('tanggal', 'desc')
+    ->paginate(50)
+    ->withQueryString();
 
     return view('laporan.index', [
         'monitorings' => $monitorings,

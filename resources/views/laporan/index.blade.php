@@ -9,26 +9,28 @@
     max-width: 1200px;
     margin: auto;
     padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .card {
     background: #fff;
-    border-radius: 14px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
 }
 
 h3 {
     margin-top: 0;
     color: #2c2f7e;
+    font-size: 22px;
 }
 
 /* ===== FILTER ===== */
 .filter-row {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
     align-items: end;
 }
 
@@ -50,17 +52,19 @@ h3 {
     border-radius: 8px;
     border: 1px solid #d6d8e6;
     font-size: 14px;
+    transition: 0.2s;
 }
 
 .filter-item input:focus {
     outline: none;
     border-color: #2c2f7e;
-    box-shadow: 0 0 0 2px rgba(44,47,126,0.15);
+    box-shadow: 0 0 0 3px rgba(44,47,126,0.15);
 }
 
 .filter-action {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .btn {
@@ -70,11 +74,11 @@ h3 {
     font-size: 14px;
     border: none;
     cursor: pointer;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
+    transition: 0.2s;
 }
 
 .btn-primary {
@@ -95,22 +99,28 @@ h3 {
 .status-summary {
     display: flex;
     gap: 16px;
-    margin: 18px 0 24px;
+    margin: 20px 0 28px;
     flex-wrap: wrap;
 }
 
 .status-box {
     flex: 1;
     min-width: 180px;
-    padding: 16px;
+    padding: 20px;
     border-radius: 12px;
     color: #fff;
     font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .status-box span {
     display: block;
-    font-size: 26px;
+    font-size: 28px;
     margin-top: 6px;
 }
 
@@ -125,6 +135,7 @@ table {
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 thead {
@@ -133,13 +144,15 @@ thead {
 }
 
 th, td {
-    padding: 12px 14px;
+    padding: 14px 16px;
+    vertical-align: middle;
+    text-align: left;
     border-bottom: 1px solid #eee;
-    vertical-align: top;
+    font-size: 14px;
 }
 
 tbody tr:hover {
-    background: #f8f9fa;
+    background: #f4f6f9;
 }
 
 .badge {
@@ -149,6 +162,7 @@ tbody tr:hover {
     font-weight: 600;
     color: #fff;
     text-transform: capitalize;
+    display: inline-block;
 }
 
 .badge.hijau { background: #2ecc71; }
@@ -161,10 +175,47 @@ tbody tr:hover {
     padding: 30px;
 }
 
+/* menambahkan css untuk pagination */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+    gap: 12px;
+}
+
+.page-btn {
+    padding: 10px 20px;
+    background: #2c2f7e;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.page-btn:hover {
+    background: #1f2258;
+}
+
+.page-btn.disabled {
+    background: #ccc;
+    pointer-events: none;
+    color: #666;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
     .filter-row {
         grid-template-columns: 1fr;
+    }
+
+    th, td {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    .status-box span {
+        font-size: 24px;
     }
 }
 </style>
@@ -198,32 +249,27 @@ tbody tr:hover {
         <!-- FILTER -->
         <form method="GET" action="{{ route('laporan') }}">
             <div class="filter-row">
-
                 <div class="filter-item">
                     <label>Nama Aplikasi</label>
                     <input type="text" name="aplikasi"
                            value="{{ request('aplikasi') }}"
                            placeholder="Cari aplikasi...">
                 </div>
-
                 <div class="filter-item">
                     <label>Bulan</label>
                     <input type="month" name="bulan"
                            value="{{ request('bulan', $bulan) }}">
                 </div>
-
                 <div class="filter-item">
                     <label>Tanggal Dari</label>
                     <input type="date" name="tanggal_dari"
                            value="{{ request('tanggal_dari') }}">
                 </div>
-
                 <div class="filter-item">
                     <label>Tanggal Sampai</label>
                     <input type="date" name="tanggal_sampai"
                            value="{{ request('tanggal_sampai') }}">
                 </div>
-
                 <div class="filter-action">
                     <button type="submit" class="btn btn-primary">Terapkan</button>
                     <a href="{{ route('laporan.pdf', request()->query()) }}"
@@ -231,7 +277,6 @@ tbody tr:hover {
                         Download PDF
                     </a>
                 </div>
-
             </div>
         </form>
 
@@ -280,7 +325,18 @@ tbody tr:hover {
                 </tbody>
             </table>
         </div>
+    </div>
 
+{{-- menambahkan pagination --}}
+    <div class="pagination-wrapper">
+        <a href="{{ $monitorings->previousPageUrl() ?? '#' }}"
+           class="page-btn {{ $monitorings->onFirstPage() ? 'disabled' : '' }}">
+            ⬅ Previous
+        </a>
+        <a href="{{ $monitorings->nextPageUrl() ?? '#' }}"
+           class="page-btn {{ $monitorings->hasMorePages() ? '' : 'disabled' }}">
+            Next ➡
+        </a>
     </div>
 </div>
 @endsection

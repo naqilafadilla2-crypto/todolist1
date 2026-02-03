@@ -13,14 +13,21 @@ class MonitoringController extends Controller
     /**
      * Display a listing of all monitorings.
      */
-    public function index()
-    {
-        // PAKAI PAGINATION (WAJIB supaya nomor index benar)
-       $monitorings = Monitoring::orderBy('created_at', 'desc')->simplePaginate(5);
+   
+public function index()
+{
+    // ambil jumlah data dari kelola aplikasi (applink)
+    $jumlahApplink = Applink::count();
 
+    // fallback kalau data kosong
+    $perPage = $jumlahApplink > 0 ? $jumlahApplink : 1;
 
-        return view('monitoring.index', compact('monitorings'));
-    }
+    $monitorings = Monitoring::orderBy('created_at', 'desc')
+        ->paginate($perPage);
+
+    return view('monitoring.index', compact('monitorings'));
+}
+
 
     /**
      * Show the form for creating a new monitoring.
