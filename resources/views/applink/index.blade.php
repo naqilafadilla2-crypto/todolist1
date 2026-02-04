@@ -11,7 +11,11 @@
     table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
     th,td { padding:10px 12px; border-bottom:1px solid #eee; text-align:left; }
     thead { background:#2c2f7e; color:#fff; }
+    .btn-edit { background:#3498db; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:13px; cursor:pointer; text-decoration:none; display:inline-block; margin-right:6px; }
+    .btn-edit:hover { background:#2980b9; }
     .btn-delete { background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:13px; cursor:pointer; }
+    .btn-delete:hover { background:#c0392b; }
+    .action-buttons { display:flex; gap:6px; }
 </style>
 
 <div class="page-container">
@@ -52,11 +56,14 @@
                     @endif
                 </td>
                 <td>
-                    <form action="{{ route('applink.destroy', $app->id) }}" method="POST" onsubmit="return confirm('Hapus aplikasi ini dari menu?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-delete">Hapus</button>
-                    </form>
+                    <div class="action-buttons">
+                        <a href="{{ route('applink.edit', $app->id) }}" class="btn-edit">Edit</a>
+                        <form action="{{ route('applink.destroy', $app->id) }}" method="POST" onsubmit="return confirm('Hapus aplikasi ini dari menu?')" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete">Hapus</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @empty

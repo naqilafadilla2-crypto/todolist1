@@ -42,6 +42,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/applink', [AppLinkController::class, 'index'])->name('applink.index');
     Route::get('/applink/create', [AppLinkController::class, 'create'])->name('applink.create');
     Route::post('/applink', [AppLinkController::class, 'store'])->name('applink.store');
+    Route::get('/applink/{id}/edit', [AppLinkController::class, 'edit'])->name('applink.edit');
+    Route::put('/applink/{id}', [AppLinkController::class, 'update'])->name('applink.update');
     Route::delete('/applink/{id}', [AppLinkController::class, 'destroy'])->name('applink.destroy');
 
     // Laporan routes

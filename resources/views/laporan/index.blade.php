@@ -167,7 +167,7 @@ tbody tr:hover {
 
 .badge.hijau { background: #2ecc71; }
 .badge.kuning { background: #f1c40f; color: #000; }
-.badge.merah { background: #e74c3c; }
+.badge.merah { background: #ab8d8a; }
 
 .no-data {
     text-align: center;
