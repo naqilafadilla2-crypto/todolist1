@@ -74,7 +74,7 @@
     }
 @endphp
 
-<h3>Laporan Monitoring - {{ $bulan->format('F Y') }}</h3>
+<h3>Laporan Monitoring{{ $periodLabel ? ' - ' . $periodLabel : '' }}</h3>
 
 <!-- RINGKASAN STATUS -->
 <table class="summary">

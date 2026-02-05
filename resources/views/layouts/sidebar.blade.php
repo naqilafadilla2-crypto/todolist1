@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>@yield('title', 'Aplikasi')</title>
+    <meta charset="UTF-8">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Aplikasi')</title>
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", Arial, sans-serif;
-    }
+@livewireStyles
 
-    body {
-        display: flex;
-        min-height: 100vh;
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
         background: #1a1f3c;
-    }
+        }
 
     /* ===== SIDEBAR ===== */
-    .sidebar {
-        width: 260px;
+        .sidebar {
+            width: 260px;
         background: linear-gradient(180deg, #2c2f7e, #1c1f5c);
-        color: #fff;
-        padding: 30px 20px;
-        position: fixed;
-        height: 100vh;
+            color: #fff;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -38,7 +41,7 @@
         align-items: center;
         justify-content: center;
         gap: 12px;
-        margin-bottom: 30px;
+            margin-bottom: 30px;
         transition: all 0.3s ease;
     }
 
@@ -59,8 +62,8 @@
     .logo-text {
         font-size: 28px;
         font-weight: 800;
-        letter-spacing: 1px;
-    }
+            letter-spacing: 1px;
+        }
 
     .logo-text .app { color: #ffffff; }
     .logo-text .link { color: #ffcc00; }
@@ -72,71 +75,71 @@
         flex-direction: column;
     }
 
-    .menu a {
-        display: flex;
-        align-items: center;
+        .menu a {
+            display: flex;
+            align-items: center;
         gap: 14px;
         padding: 14px 16px;
-        margin-bottom: 10px;
+            margin-bottom: 10px;
         color: #e6e8ff;
-        text-decoration: none;
+            text-decoration: none;
         border-radius: 12px;
-        font-size: 15px;
+            font-size: 15px;
         transition: all 0.25s ease;
-    }
+        }
 
-    .menu a:hover {
+        .menu a:hover {
         background: rgba(255,255,255,0.12);
-        transform: translateX(6px);
-    }
+            transform: translateX(6px);
+        }
 
-    .menu a.active {
+        .menu a.active {
         background: rgba(255,255,255,0.2);
         color: #fff;
-        font-weight: 600;
+            font-weight: 600;
         box-shadow: inset 4px 0 0 #ffcc00;
-    }
+        }
 
     .menu a .icon {
-        font-size: 18px;
+            font-size: 18px;
         width: 26px;
-        text-align: center;
+            text-align: center;
         opacity: 0.9;
-    }
+        }
 
     /* ===== LOGOUT ===== */
-    .logout {
+        .logout {
         margin-top: 30px;
-    }
+        }
 
-    .logout button {
-        width: 100%;
+        .logout button {
+            width: 100%;
         padding: 14px;
         background: linear-gradient(135deg, #ff4d4d, #c0392b);
-        border: none;
+            border: none;
         color: #fff;
         border-radius: 14px;
-        cursor: pointer;
-        font-weight: 600;
+            cursor: pointer;
+            font-weight: 600;
         font-size: 15px;
         transition: all 0.25s ease;
         box-shadow: 0 6px 18px rgba(255,77,77,0.4);
-    }
+        }
 
-    .logout button:hover {
+        .logout button:hover {
         transform: translateY(-2px);
         box-shadow: 0 10px 22px rgba(255,77,77,0.55);
-    }
+        }
 
     /* ===== CONTENT ===== */
-    .content {
-        margin-left: 260px;
+        .content {
+            margin-left: 260px;
         padding: 32px;
-        width: calc(100% - 260px);
+            width: calc(100% - 260px);
         background: #f4f6fb;
         min-height: 100vh;
-    }
-</style>
+        }
+    </style>
 </head>
 <body>
 
@@ -152,26 +155,30 @@
         </div>
 
         <!-- MENU -->
-        <div class="menu">
+    <div class="menu">
             @if(auth()->user()->role === 'admin')
-                <a href="{{ route('menu') }}" class="{{ request()->routeIs('menu') ? 'active' : '' }}">
+        <a href="{{ route('menu') }}" class="{{ request()->routeIs('menu') ? 'active' : '' }}">
                     Dashboard
-                </a>
+        </a>
 
-                <a href="{{ route('applink.index') }}" class="{{ request()->routeIs('applink.*') ? 'active' : '' }}">
+        <a href="{{ route('applink.index') }}" class="{{ request()->routeIs('applink.*') ? 'active' : '' }}">
                     Kelola Aplikasi
-                </a>
+        </a>
 
                 <a href="{{ route('monitoring.index') }}" class="{{ request()->routeIs('monitoring.*') && !request()->routeIs('monitoring.user.*') ? 'active' : '' }}">
                     Monitoring
-                </a>
+        </a>
 
-                <a href="{{ route('laporan') }}" class="{{ request()->routeIs('laporan') ? 'active' : '' }}">
+        <a href="{{ route('laporan') }}" class="{{ request()->routeIs('laporan') ? 'active' : '' }}">
                     Laporan
+        </a>
+
+        <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.*') ? 'active' : '' }}">
+                   User
                 </a>
 
-                <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.*') ? 'active' : '' }}">
-                   User
+                <a href="{{ route('rack.index') }}" class="{{ request()->routeIs('rack.*') ? 'active' : '' }}">
+                   Rack Management
                 </a>
             @else
                 <a href="{{ route('monitoring.user.dashboard') }}" class="{{ request()->routeIs('monitoring.user.*') || request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -203,5 +210,6 @@
     @yield('content')
 </div>
 
+@livewireScripts
 </body>
 </html>

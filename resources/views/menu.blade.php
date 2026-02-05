@@ -592,7 +592,7 @@
     <!-- MENU APLIKASI -->
     <div class="menu-section">
         <h3 class="section-title">Daftar Aplikasi</h3>
-        <div class="menu-grid">
+    <div class="menu-grid">
         @forelse($applinks as $app)
             @php
                 $image = $app->image ? asset('storage/'.$app->image) : asset('images/bakti.png');
@@ -640,8 +640,8 @@
             <div style="grid-column:1 / -1; text-align:center; padding:40px; color:#999;">
                 <div style="font-size:48px; margin-bottom:15px;">📱</div>
                 <p style="font-size:16px; margin:0;">
-                    Belum ada aplikasi. Tambah dari menu <b>Kelola Aplikasi</b>.
-                </p>
+                Belum ada aplikasi. Tambah dari menu <b>Kelola Aplikasi</b>.
+            </p>
             </div>
         @endforelse
         </div>

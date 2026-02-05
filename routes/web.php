@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AppLinkController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\RackController;
 
 // Halaman Login Utama (landing page)
 Route::get('/', [LoginController::class, 'loginPage'])->name('login'); 
@@ -49,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
     // Laporan routes
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
     Route::get('/laporan/pdf', [LaporanController::class, 'pdf'])->name('laporan.pdf');
+    Route::get('/laporan/excel', [LaporanController::class, 'excel'])->name('laporan.excel');
 
     // User management routes
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
@@ -57,6 +59,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
+    // Rack management routes
+    Route::get('/rack', [RackController::class, 'index'])->name('rack.index');
+    Route::post('/rack', [RackController::class, 'store'])->name('rack.store');
+    Route::delete('/rack/{id}', [RackController::class, 'destroy'])->name('rack.destroy');
+    
+    // Device status check routes
+    Route::post('/rack/devices/check-all', [RackController::class, 'checkAllDevices'])->name('rack.devices.check-all');
+    Route::post('/rack/devices/{deviceId}/check', [RackController::class, 'checkDevice'])->name('rack.devices.check');
+    
+    // Device log export routes
+    Route::get('/rack/devices/{deviceId}/export-logs', [RackController::class, 'exportDeviceLogs'])->name('rack.devices.export-logs');
     
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

@@ -247,7 +247,7 @@ tbody tr:hover {
         </div>
 
         <!-- FILTER -->
-        <form method="GET" action="{{ route('laporan') }}">
+        <form method="GET" action="{{ route('laporan') }}" id="filterForm">
             <div class="filter-row">
                 <div class="filter-item">
                     <label>Nama Aplikasi</label>
@@ -258,27 +258,59 @@ tbody tr:hover {
                 <div class="filter-item">
                     <label>Bulan</label>
                     <input type="month" name="bulan"
-                           value="{{ request('bulan', $bulan) }}">
-                </div>
-                <div class="filter-item">
-                    <label>Tanggal Dari</label>
-                    <input type="date" name="tanggal_dari"
-                           value="{{ request('tanggal_dari') }}">
-                </div>
-                <div class="filter-item">
-                    <label>Tanggal Sampai</label>
-                    <input type="date" name="tanggal_sampai"
-                           value="{{ request('tanggal_sampai') }}">
-                </div>
+                           value="{{ request('bulan', $bulan) }}"
+                           id="bulanInput">
+                </div>                
                 <div class="filter-action">
                     <button type="submit" class="btn btn-primary">Terapkan</button>
-                    <a href="{{ route('laporan.pdf', request()->query()) }}"
-                       class="btn btn-secondary">
-                        Download PDF
-                    </a>
                 </div>
             </div>
         </form>
+
+        <!-- DOWNLOAD SECTION -->
+        <div style="margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+            <h4 style="margin: 0 0 15px 0; color: #2c2f7e;">Download Laporan</h4>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: end;">
+                <div class="filter-item" style="min-width: 150px;">
+                    <label>Format</label>
+                    <select name="format" id="formatSelect" style="height: 38px; padding: 8px 12px; border-radius: 8px; border: 1px solid #d6d8e6; font-size: 14px; width: 100%;">
+                        <option value="pdf">PDF</option>
+                        <option value="excel">Excel</option>
+                    </select>
+                </div>
+                <div class="filter-item" style="min-width: 150px;">
+                    <label>Periode</label>
+                    <select name="periode" id="periodeSelect" style="height: 38px; padding: 8px 12px; border-radius: 8px; border: 1px solid #d6d8e6; font-size: 14px; width: 100%;">
+                        <option value="bulan">Per Bulan</option>
+                        <option value="tahun">Per Tahun</option>
+                        <option value="minggu">Per Minggu</option>
+                    </select>
+                </div>
+                <button type="button" onclick="downloadLaporan()" class="btn btn-secondary" style="height: 38px;">
+                    Download
+                </button>
+            </div>
+        </div>
+
+        <script>
+        function downloadLaporan() {
+            const format = document.getElementById('formatSelect').value;
+            const periode = document.getElementById('periodeSelect').value;
+            
+            // Ambil semua query parameter dari URL saat ini
+            const params = new URLSearchParams(window.location.search);
+            params.set('periode', periode);
+            
+            let url;
+            if (format === 'excel') {
+                url = '{{ route("laporan.excel") }}?' + params.toString();
+            } else {
+                url = '{{ route("laporan.pdf") }}?' + params.toString();
+            }
+            
+            window.location.href = url;
+        }
+        </script>
 
         <!-- TABEL -->
         <div style="overflow-x:auto;">
