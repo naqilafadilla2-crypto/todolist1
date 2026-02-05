@@ -115,15 +115,20 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h2>Rack Management</h2>
             <div style="display: flex; gap: 10px;">
+                <button wire:click="openRackModal()" 
+                        style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;"
+                        title="Tambah rack baru">
+                    + Tambah Rack
+                </button>
                 <button wire:click="openReportModal()" 
                         style="padding: 10px 20px; background: #FF9800; color: white; border: none; border-radius: 5px; cursor: pointer;"
                         title="Buat laporan rack">
-                    📊 Report
+                    Report
                 </button>
                 <button wire:click="checkDeviceStatus()" 
                         style="padding: 10px 20px; background: #2196F3; color: white; border: none; border-radius: 5px; cursor: pointer;"
                         title="Cek status semua perangkat">
-                    🔄 Cek Semua Status
+                    Cek Semua Status
                 </button>
                 <button wire:click="openDeviceModal()" style="padding: 10px 20px; background: #2c2f7e; color: white; border: none; border-radius: 5px; cursor: pointer;">
                     + Tambah Perangkat
@@ -168,8 +173,23 @@
                      ondrop="handleDrop(event, {{ $rack->id }})" 
                      ondragover="event.preventDefault()"
                      wire:key="rack-{{ $rack->id }}">
-                    <div style="background: #333; color: white; padding: 10px; text-align: center; font-weight: bold;">
-                        {{ $rack->name }}
+                    <div style="background: #333; color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1; text-align: center; font-weight: bold;">
+                            {{ $rack->name }} ({{ $rack->total_units }}U)
+                        </div>
+                        <div style="display: flex; gap: 5px;">
+                            <button wire:click="openRackModal({{ $rack->id }})" 
+                                    style="font-size: 12px; padding: 4px 10px; background: #2196F3; color: white; border: none; border-radius: 3px; cursor: pointer;"
+                                    title="Edit rack">
+                                Edit
+                            </button>
+                            <button wire:click="deleteRack({{ $rack->id }})" 
+                                    onclick="return confirm('Yakin ingin menghapus rack ini? (Pastikan tidak ada device di dalamnya)')"
+                                    style="font-size: 12px; padding: 4px 10px; background: #f44336; color: white; border: none; border-radius: 3px; cursor: pointer;"
+                                    title="Hapus rack">
+                                Hapus
+                            </button>
+                        </div>
                     </div>
                     @for($i = $rack->total_units; $i >= 1; $i--)
                         @php
@@ -632,6 +652,36 @@
                         <p>Pilih tipe laporan untuk melihat data.</p>
                     </div>
                 @endif
+            </div>
+        </div>
+    @endif
+
+    <!-- Rack Modal -->
+    @if($showRackModal)
+        <div class="modal show" wire:click.self="closeRackModal()">
+            <div class="modal-content">
+                <h3>{{ $editingRackId ? 'Edit' : 'Tambah' }} Rack</h3>
+                <form wire:submit.prevent="saveRack">
+                    <div style="margin-bottom: 15px;">
+                        <label>Nama Rack:</label>
+                        <input type="text" wire:model="rackName" style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;" placeholder="Contoh: Rack A, Server Rack 1, etc">
+                        @error('rackName') <span style="color: red; font-size: 12px;">{{ $message }}</span> @enderror
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label>Total Unit (U):</label>
+                        <input type="number" wire:model="rackTotalUnits" min="1" max="100" style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                        @error('rackTotalUnits') <span style="color: red; font-size: 12px;">{{ $message }}</span> @enderror
+                    </div>
+                    @if($editingRackId)
+                        <div style="margin-bottom: 15px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-size: 12px; color: #666;">
+                            <strong>Catatan:</strong> Mengubah total unit dapat mempengaruhi device yang sudah ditempatkan. Pastikan semua device masih dalam range yang valid.
+                        </div>
+                    @endif
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button type="button" wire:click="closeRackModal()" style="padding: 10px 20px; background: #ccc; border: none; border-radius: 5px; cursor: pointer;">Batal</button>
+                        <button type="submit" style="padding: 10px 20px; background: #2c2f7e; color: white; border: none; border-radius: 5px; cursor: pointer;">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     @endif

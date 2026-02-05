@@ -4,13 +4,6 @@
 
 @section('content')
 <div style="padding: 20px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2>Rack Management</h2>
-        <button onclick="openRackModal()" style="padding: 10px 20px; background: #2c2f7e; color: white; border: none; border-radius: 5px; cursor: pointer;">
-            + Tambah Rack
-        </button>
-    </div>
-
     @livewire('rack-management')
 </div>
 

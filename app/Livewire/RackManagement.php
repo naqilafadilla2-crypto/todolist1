@@ -32,6 +32,13 @@ class RackManagement extends Component
     public $showReportModal = false;
     public $reportRackId = null;
     public $reportType = 'summary'; // summary, devices, status, logs
+    
+    // Rack modal properties
+    public $showRackModal = false;
+    public $editingRackId = null;
+    public $rackName = '';
+    public $rackTotalUnits = 42;
+
 
     public function mount()
     {
@@ -528,5 +535,77 @@ class RackManagement extends Component
             'total_logs' => $logs->count(),
             'data' => $logs,
         ];
+    }
+
+    // Rack Management Methods
+    public function openRackModal($rackId = null)
+    {
+        $this->editingRackId = $rackId;
+        if ($rackId) {
+            $rack = Rack::find($rackId);
+            if ($rack) {
+                $this->rackName = $rack->name;
+                $this->rackTotalUnits = $rack->total_units;
+            }
+        } else {
+            $this->resetRackForm();
+        }
+        $this->showRackModal = true;
+    }
+
+    public function closeRackModal()
+    {
+        $this->showRackModal = false;
+        $this->resetRackForm();
+        $this->editingRackId = null;
+    }
+
+    public function resetRackForm()
+    {
+        $this->rackName = '';
+        $this->rackTotalUnits = 42;
+    }
+
+    public function saveRack()
+    {
+        $this->validate([
+            'rackName' => 'required|string|max:255',
+            'rackTotalUnits' => 'required|integer|min:1|max:100',
+        ]);
+
+        $data = [
+            'name' => $this->rackName,
+            'total_units' => $this->rackTotalUnits,
+        ];
+
+        if ($this->editingRackId) {
+            Rack::find($this->editingRackId)->update($data);
+        } else {
+            Rack::create($data);
+        }
+
+        $this->closeRackModal();
+        $this->loadData();
+        $this->dispatch('rack-saved');
+    }
+
+    public function deleteRack($rackId)
+    {
+        $rack = Rack::find($rackId);
+        
+        if (!$rack) {
+            return;
+        }
+
+        // Cek apakah ada device di rack ini
+        $deviceCount = Device::where('rack_id', $rackId)->count();
+        if ($deviceCount > 0) {
+            $this->addError('rackDelete', "Tidak bisa menghapus rack karena masih ada {$deviceCount} perangkat di dalamnya. Pindahkan atau hapus semua perangkat terlebih dahulu.");
+            return;
+        }
+
+        $rack->delete();
+        $this->loadData();
+        $this->dispatch('rack-deleted');
     }
 }
