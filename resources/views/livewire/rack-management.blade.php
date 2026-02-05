@@ -118,7 +118,7 @@
                 <button wire:click="openRackModal()" 
                         style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;"
                         title="Tambah rack baru">
-                    + Tambah Rack
+                    Tambah Rack
                 </button>
                 <button wire:click="openReportModal()" 
                         style="padding: 10px 20px; background: #FF9800; color: white; border: none; border-radius: 5px; cursor: pointer;"
@@ -131,7 +131,7 @@
                     Cek Semua Status
                 </button>
                 <button wire:click="openDeviceModal()" style="padding: 10px 20px; background: #2c2f7e; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    + Tambah Perangkat
+                    Tambah Perangkat
                 </button>
             </div>
         </div>
