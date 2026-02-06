@@ -136,7 +136,7 @@
 
 <div class="page-container">
     <div class="page-header">
-        <h2>User Management</h2>
+        <h2>User</h2>
         <a href="{{ route('user.create') }}" class="btn-add">+ Tambah User</a>
     </div>
 

@@ -29,7 +29,13 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/menu')->with('success', 'Login berhasil!');
+            // Redirect based on role: admins -> /menu, regular users -> monitoring dashboard
+            $user = Auth::user();
+            if ($user && isset($user->role) && $user->role === 'admin') {
+                return redirect()->intended(route('menu'))->with('success', 'Login berhasil!');
+            }
+
+            return redirect()->intended(route('monitoring.user.dashboard'))->with('success', 'Login berhasil!');
         }
 
         return back()->withErrors([

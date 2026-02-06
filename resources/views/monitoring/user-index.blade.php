@@ -1,6 +1,6 @@
 @extends('layouts.sidebar')
 
-@section('title', 'Dashboard Monitoring')
+@section('title', 'Menu Aplikasi')
 
 @section('content')
 <style>
@@ -201,7 +201,7 @@
 
 <div class="page-container">
     <div class="page-header">
-        <h2>Dashboard Monitoring Aplikasi</h2>
+        <h2>Menu Aplikasi</h2>
         <div class="user-welcome">Halo, {{ auth()->user()->name }}</div>
     </div>
 

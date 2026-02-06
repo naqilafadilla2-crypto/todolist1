@@ -1,6 +1,6 @@
 @extends('layouts.sidebar')
 
-@section('title', 'Dashboard')
+@section('title', 'Monitoring')
 
 @section('content')
 
@@ -469,8 +469,8 @@
     <div class="dashboard-header">
         <div class="dashboard-header-content">
             <div>
-                <h1>APLIKASI PEMANTAUAN PENGECEKAN LAYANAN BAKTI</h1>
-                <p class="subtitle">Dashboard Monitoring & Status Aplikasi</p>
+                <h1>Aplikasi Pemantauan Pengecekan Layanan Bakti</h1>
+                <p class="subtitle">Status Aplikasi Realtime</p>
             </div>
             <div class="user-info">
                 <div class="welcome">Selamat Datang, <strong>{{ auth()->user()->name }}</strong></div>

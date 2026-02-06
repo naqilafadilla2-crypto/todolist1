@@ -181,16 +181,16 @@
                    Rack Management
                 </a>
             @else
+
+            <a href="{{ route('menu') }}" class="{{ request()->routeIs('menu') ? 'active' : '' }}">
+                    Dashboard
+                </a>
                 <a href="{{ route('monitoring.user.dashboard') }}" class="{{ request()->routeIs('monitoring.user.*') || request()->routeIs('dashboard') ? 'active' : '' }}">
-                    Dashboard Monitoring
+                    Menu Aplikasi
                 </a>
 
                 <a href="{{ route('laporan') }}" class="{{ request()->routeIs('laporan') ? 'active' : '' }}">
                     Laporan
-                </a>
-
-                <a href="{{ route('menu') }}" class="{{ request()->routeIs('menu') ? 'active' : '' }}">
-                    Menu Aplikasi
                 </a>
             @endif
         </div>
