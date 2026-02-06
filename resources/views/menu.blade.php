@@ -480,84 +480,195 @@
     </div>
 
     @php
-        use App\Models\Monitoring;
-        
-        // Statistik Overall (Semua Aplikasi)
-        $allMonitorings = Monitoring::all();
-        $totalAll = $allMonitorings->count();
-        $hijauAll = $allMonitorings->where('status', 'hijau')->count();
-        $kuningAll = $allMonitorings->where('status', 'kuning')->count();
-        $merahAll = $allMonitorings->where('status', 'merah')->count();
-        
-        $persenHijauAll = $totalAll > 0 ? round(($hijauAll / $totalAll) * 100, 1) : 0;
-        $persenKuningAll = $totalAll > 0 ? round(($kuningAll / $totalAll) * 100, 1) : 0;
-        $persenMerahAll = $totalAll > 0 ? round(($merahAll / $totalAll) * 100, 1) : 0;
-        
-        // Hitung angle untuk pie chart
-        $hijauAngle = $persenHijauAll * 3.6; // 360 / 100
-        $kuningAngle = ($persenHijauAll + $persenKuningAll) * 3.6;
-        
-        // Statistik per aplikasi
-        $applinks = \App\Models\AppLink::orderBy('name')->get();
-        $appStats = [];
-        foreach ($applinks as $app) {
-            $appMonitorings = Monitoring::where('nama_aplikasi', $app->name)->get();
-            $totalApp = $appMonitorings->count();
-            $hijauApp = $appMonitorings->where('status', 'hijau')->count();
-            $kuningApp = $appMonitorings->where('status', 'kuning')->count();
-            $merahApp = $appMonitorings->where('status', 'merah')->count();
-            
-            $appStats[$app->id] = [
-                'name' => $app->name,
-                'total' => $totalApp,
-                'hijau' => $hijauApp,
-                'kuning' => $kuningApp,
-                'merah' => $merahApp,
-                'persen_hijau' => $totalApp > 0 ? round(($hijauApp / $totalApp) * 100, 1) : 0,
-                'persen_kuning' => $totalApp > 0 ? round(($kuningApp / $totalApp) * 100, 1) : 0,
-                'persen_merah' => $totalApp > 0 ? round(($merahApp / $totalApp) * 100, 1) : 0,
-            ];
-        }
-    @endphp
+use App\Models\Monitoring;
+use App\Models\AppLink;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
-    <!-- SUMMARY STATS -->
-    <div class="summary-grid">
-        <div class="summary-card primary">
+/*
+|--------------------------------------------------------------------------
+| SET WAKTU
+|--------------------------------------------------------------------------
+*/
+$now   = Carbon::now('Asia/Jakarta');
+$today = $now->toDateString();
+$year  = $now->year;
+
+/*
+|--------------------------------------------------------------------------
+| STATISTIK PER HARI (HARI INI)
+|--------------------------------------------------------------------------
+*/
+$dailyStats = Monitoring::select('status', DB::raw('COUNT(*) as total'))
+    ->whereDate('created_at', $today)
+    ->groupBy('status')
+    ->pluck('total', 'status');
+
+$hijauHariIni  = $dailyStats['hijau'] ?? 0;
+$kuningHariIni = $dailyStats['kuning'] ?? 0;
+$merahHariIni  = $dailyStats['merah'] ?? 0;
+$totalHariIni  = $dailyStats->sum();
+
+/*
+|--------------------------------------------------------------------------
+| STATISTIK PER TAHUN (TAHUN INI)
+|--------------------------------------------------------------------------
+*/
+$yearlyStats = Monitoring::select('status', DB::raw('COUNT(*) as total'))
+    ->whereYear('created_at', $year)
+    ->groupBy('status')
+    ->pluck('total', 'status');
+
+$hijauTahunIni  = $yearlyStats['hijau'] ?? 0;
+$kuningTahunIni = $yearlyStats['kuning'] ?? 0;
+$merahTahunIni  = $yearlyStats['merah'] ?? 0;
+$totalTahunIni  = $yearlyStats->sum();
+
+/*
+|--------------------------------------------------------------------------
+| STATISTIK KESELURUHAN (ALL TIME)
+|--------------------------------------------------------------------------
+*/
+$allStats = Monitoring::select('status', DB::raw('COUNT(*) as total'))
+    ->groupBy('status')
+    ->pluck('total', 'status');
+
+$hijauAll  = $allStats['hijau'] ?? 0;
+$kuningAll = $allStats['kuning'] ?? 0;
+$merahAll  = $allStats['merah'] ?? 0;
+$totalAll  = $allStats->sum();
+
+$persenHijauAll  = $totalAll > 0 ? round(($hijauAll / $totalAll) * 100, 1) : 0;
+$persenKuningAll = $totalAll > 0 ? round(($kuningAll / $totalAll) * 100, 1) : 0;
+$persenMerahAll  = $totalAll > 0 ? round(($merahAll / $totalAll) * 100, 1) : 0;
+
+/*
+|--------------------------------------------------------------------------
+| ANGLE PIE CHART
+|--------------------------------------------------------------------------
+*/
+$hijauAngle  = $persenHijauAll * 3.6;
+$kuningAngle = ($persenHijauAll + $persenKuningAll) * 3.6;
+
+/*
+|--------------------------------------------------------------------------
+| STATISTIK PER APLIKASI
+|--------------------------------------------------------------------------
+*/
+$applinks = AppLink::orderBy('name')->get();
+$appStats = [];
+
+foreach ($applinks as $app) {
+
+    $stats = Monitoring::select('status', DB::raw('COUNT(*) as total'))
+        ->where('nama_aplikasi', $app->name)
+        ->groupBy('status')
+        ->pluck('total', 'status');
+
+    $totalApp  = $stats->sum();
+    $hijauApp  = $stats['hijau'] ?? 0;
+    $kuningApp = $stats['kuning'] ?? 0;
+    $merahApp  = $stats['merah'] ?? 0;
+
+    $appStats[$app->id] = [
+        'name' => $app->name,
+        'total' => $totalApp,
+        'hijau' => $hijauApp,
+        'kuning' => $kuningApp,
+        'merah' => $merahApp,
+        'persen_hijau'  => $totalApp > 0 ? round(($hijauApp / $totalApp) * 100, 1) : 0,
+        'persen_kuning' => $totalApp > 0 ? round(($kuningApp / $totalApp) * 100, 1) : 0,
+        'persen_merah'  => $totalApp > 0 ? round(($merahApp / $totalApp) * 100, 1) : 0,
+    ];
+}
+@endphp
+
+   <!-- SUMMARY STATS - HARI INI -->
+<h3 style="margin: 30px 0 15px;"> Status Hari Ini</h3>
+
+<div class="summary-card primary" style="padding: 30px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px;">
+
+        <!-- TOTAL -->
+        <div>
             <div class="summary-card-header">
-                <h4>Total Aplikasi</h4>
-                <div class="summary-card-icon">🌐</div>
+                <h4>Total Monitoring</h4>
             </div>
-            <h2>{{ \App\Models\AppLink::count() }}</h2>
-            <div class="change">Aplikasi terdaftar</div>
+            <h2>{{ $totalHariIni }}</h2>
+            <div class="change">Data monitoring hari ini</div>
         </div>
 
-        <div class="summary-card success">
+        <!-- HIJAU -->
+        <div>
             <div class="summary-card-header">
                 <h4>Status Hijau</h4>
-                <div class="summary-card-icon">✅</div>
             </div>
-            <h2>{{ $hijauAll }}</h2>
-            <div class="change">{{ $persenHijauAll }}% dari total monitoring</div>
+            <h2>{{ $hijauHariIni }}</h2>
+            <div class="change">Aplikasi normal hari ini</div>
         </div>
 
-        <div class="summary-card warning">
+        <!-- KUNING -->
+        <div>
             <div class="summary-card-header">
                 <h4>Status Kuning</h4>
-                <div class="summary-card-icon">⚠️</div>
             </div>
-            <h2>{{ $kuningAll }}</h2>
-            <div class="change">{{ $persenKuningAll }}% dari total monitoring</div>
+            <h2>{{ $kuningHariIni }}</h2>
+            <div class="change">Perlu perhatian hari ini</div>
         </div>
 
-        <div class="summary-card danger">
+        <!-- MERAH -->
+        <div>
             <div class="summary-card-header">
                 <h4>Status Merah</h4>
-                <div class="summary-card-icon">🔴</div>
             </div>
-            <h2>{{ $merahAll }}</h2>
-            <div class="change">{{ $persenMerahAll }}% dari total monitoring</div>
+            <h2>{{ $merahHariIni }}</h2>
+            <div class="change">Down / error hari ini</div>
         </div>
+
     </div>
+</div>
+
+
+<!-- SUMMARY STATS - TAHUN INI -->
+<h3 style="margin: 40px 0 10px;">Status Tahun {{ date('Y') }}</h3>
+
+<div class="summary-grid">
+    <div class="summary-card primary">
+        <div class="summary-card-header">
+            <h4>Total Monitoring</h4>
+            <div class="summary-card-icon"></div>
+        </div>
+        <h2>{{ $totalTahunIni }}</h2>
+        <div class="change">Data monitoring tahun ini</div>
+    </div>
+
+    <div class="summary-card success">
+        <div class="summary-card-header">
+            <h4>Status Hijau</h4>
+            <div class="summary-card-icon"></div>
+        </div>
+        <h2>{{ $hijauTahunIni }}</h2>
+        <div class="change">Normal sepanjang tahun</div>
+    </div>
+
+    <div class="summary-card warning">
+        <div class="summary-card-header">
+            <h4>Status Kuning</h4>
+            <div class="summary-card-icon"></div>
+        </div>
+        <h2>{{ $kuningTahunIni }}</h2>
+        <div class="change">Perlu perhatian tahun ini</div>
+    </div>
+
+    <div class="summary-card danger">
+        <div class="summary-card-header">
+            <h4>Status Merah</h4>
+            <div class="summary-card-icon"></div>
+        </div>
+        <h2>{{ $merahTahunIni }}</h2>
+        <div class="change">Gangguan tahun ini</div>
+    </div>
+</div>
 
     <!-- CHART SECTION -->
     <div class="chart-section">
