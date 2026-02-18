@@ -7,6 +7,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AppLinkController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\RackController;
+use App\Http\Controllers\MaintenanceChecklistController;
 
 // Halaman Login Utama (landing page)
 Route::get('/', [LoginController::class, 'loginPage'])->name('login'); 
@@ -71,6 +72,19 @@ Route::middleware(['auth'])->group(function () {
     
     // Device log export routes
     Route::get('/rack/devices/{deviceId}/export-logs', [RackController::class, 'exportDeviceLogs'])->name('rack.devices.export-logs');
+    
+    // Maintenance checklist routes
+    Route::get('/maintenance-checklist', [MaintenanceChecklistController::class, 'index'])->name('maintenance.checklist.index');
+    Route::put('/maintenance-checklist/{id}', [MaintenanceChecklistController::class, 'update'])->name('maintenance.checklist.update');
+    Route::put('/maintenance-checklist/{id}/keterangan', [MaintenanceChecklistController::class, 'updateKeterangan'])->name('maintenance.checklist.keterangan');
+    Route::put('/maintenance-checklist/{id}/checkbox', [MaintenanceChecklistController::class, 'toggleCheckbox'])->name('maintenance.checklist.checkbox');
+    Route::post('/maintenance-checklist', [MaintenanceChecklistController::class, 'storePerangkat'])->name('maintenance.checklist.store');
+    Route::delete('/maintenance-checklist/{id}', [MaintenanceChecklistController::class, 'deletePerangkat'])->name('maintenance.checklist.delete');
+    
+    // Maintenance logs routes
+    Route::post('/maintenance-checklist/{id}/logs', [MaintenanceChecklistController::class, 'storeLog'])->name('maintenance.log.store');
+    Route::put('/maintenance-checklist/{id}/logs/{logId}', [MaintenanceChecklistController::class, 'updateLog'])->name('maintenance.log.update');
+    Route::delete('/maintenance-checklist/{id}/logs/{logId}', [MaintenanceChecklistController::class, 'deleteLog'])->name('maintenance.log.delete');
     
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

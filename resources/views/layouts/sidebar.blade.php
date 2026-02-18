@@ -234,6 +234,10 @@
                    Kelola Rack
                 </a>
 
+            <a href="{{ route('maintenance.checklist.index') }}" class="{{ request()->routeIs('maintenance.*') ? 'active' : '' }}">
+                   Checklist Perawatan
+                </a>
+
              <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.*') ? 'active' : '' }}">
                    Pengguna
                 </a>    
