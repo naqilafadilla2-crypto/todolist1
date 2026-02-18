@@ -65,12 +65,38 @@ class MaintenanceChecklistController extends Controller
             'quarter' => 'required|in:q1,q2,q3,q4',
         ]);
 
-        $checkedColumn = "checked_{$request->quarter}";
-        $checklist->update([
-            $checkedColumn => !$checklist->{$checkedColumn},
-        ]);
+        $statusColumn = "status_{$request->quarter}";
+        $tanggalColumn = "tanggal_{$request->quarter}";
+        $currentStatus = $checklist->{$statusColumn};
 
-        return back()->with('success', "Checkbox berhasil diupdate.");
+        // Cycle through statuses: belum → proses → selesai → belum
+        $nextStatus = match($currentStatus) {
+            'belum' => 'proses',
+            'proses' => 'selesai',
+            'selesai' => 'belum',
+            default => 'belum'
+        };
+
+        // Update status and tanggal if selesai
+        $updateData = [
+            $statusColumn => $nextStatus,
+        ];
+        
+        if ($nextStatus === 'selesai') {
+            $updateData[$tanggalColumn] = now()->toDateString();
+        } elseif ($nextStatus === 'belum') {
+            $updateData[$tanggalColumn] = null;
+        }
+
+        $checklist->update($updateData);
+
+        $statusNames = [
+            'belum' => 'Belum (❌)',
+            'proses' => 'Terjadwal (⏳)',
+            'selesai' => 'Selesai (✓)'
+        ];
+
+        return back()->with('success', "Status Q{strtoupper(str_replace('q', '', $request->quarter))} berubah menjadi {$statusNames[$nextStatus]}.");
     }
 
     public function storePerangkat(Request $request)

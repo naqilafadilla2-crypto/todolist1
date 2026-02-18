@@ -445,6 +445,10 @@
             <span>Belum Dilakukan</span>
         </div>
         <div class="legend-item">
+            <div class="legend-color" style="background: #ffd93d;"></div>
+            <span>Terjadwal</span>
+        </div>
+        <div class="legend-item">
             <div class="legend-color" style="background: #2ecc71;"></div>
             <span>Selesai</span>
         </div>
@@ -480,13 +484,10 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="quarter" value="q1">
-                                    <input type="checkbox" {{ $checklist->checked_q1 ? 'checked' : '' }} onchange="this.form.submit()" style="cursor: pointer; width: 18px; height: 18px; accent-color: #2ecc71;">
+                                    <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                                        {{ $checklist->status_q1 === 'selesai' ? '✅' : ($checklist->status_q1 === 'proses' ? '⏳' : '❌') }}
+                                    </button>
                                 </form>
-                                @if(!$checklist->checked_q1)
-                                    <div style="font-size: 18px; color: #e74c3c;">❌</div>
-                                @else
-                                    <div style="font-size: 18px; color: #2ecc71; font-weight: bold;">✓</div>
-                                @endif
                                 @if($checklist->status_q1 === 'selesai' && $checklist->tanggal_q1)
                                     <div style="font-size: 10px; color: #999;">{{ $checklist->tanggal_q1->format('d/m/Y') }}</div>
                                 @endif
@@ -498,13 +499,10 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="quarter" value="q2">
-                                    <input type="checkbox" {{ $checklist->checked_q2 ? 'checked' : '' }} onchange="this.form.submit()" style="cursor: pointer; width: 18px; height: 18px; accent-color: #2ecc71;">
+                                    <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                                        {{ $checklist->status_q2 === 'selesai' ? '✅' : ($checklist->status_q2 === 'proses' ? '⏳' : '❌') }}
+                                    </button>
                                 </form>
-                                @if(!$checklist->checked_q2)
-                                    <div style="font-size: 18px; color: #e74c3c;">❌</div>
-                                @else
-                                    <div style="font-size: 18px; color: #2ecc71; font-weight: bold;">✓</div>
-                                @endif
                                 @if($checklist->status_q2 === 'selesai' && $checklist->tanggal_q2)
                                     <div style="font-size: 10px; color: #999;">{{ $checklist->tanggal_q2->format('d/m/Y') }}</div>
                                 @endif
@@ -516,13 +514,10 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="quarter" value="q3">
-                                    <input type="checkbox" {{ $checklist->checked_q3 ? 'checked' : '' }} onchange="this.form.submit()" style="cursor: pointer; width: 18px; height: 18px; accent-color: #2ecc71;">
+                                    <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                                        {{ $checklist->status_q3 === 'selesai' ? '✅' : ($checklist->status_q3 === 'proses' ? '⏳' : '❌') }}
+                                    </button>
                                 </form>
-                                @if(!$checklist->checked_q3)
-                                    <div style="font-size: 18px; color: #e74c3c;">❌</div>
-                                @else
-                                    <div style="font-size: 18px; color: #2ecc71; font-weight: bold;">✓</div>
-                                @endif
                                 @if($checklist->status_q3 === 'selesai' && $checklist->tanggal_q3)
                                     <div style="font-size: 10px; color: #999;">{{ $checklist->tanggal_q3->format('d/m/Y') }}</div>
                                 @endif
@@ -534,13 +529,10 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="quarter" value="q4">
-                                    <input type="checkbox" {{ $checklist->checked_q4 ? 'checked' : '' }} onchange="this.form.submit()" style="cursor: pointer; width: 18px; height: 18px; accent-color: #2ecc71;">
+                                    <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                                        {{ $checklist->status_q4 === 'selesai' ? '✅' : ($checklist->status_q4 === 'proses' ? '⏳' : '❌') }}
+                                    </button>
                                 </form>
-                                @if(!$checklist->checked_q4)
-                                    <div style="font-size: 18px; color: #e74c3c;">❌</div>
-                                @else
-                                    <div style="font-size: 18px; color: #2ecc71; font-weight: bold;">✓</div>
-                                @endif
                                 @if($checklist->status_q4 === 'selesai' && $checklist->tanggal_q4)
                                     <div style="font-size: 10px; color: #999;">{{ $checklist->tanggal_q4->format('d/m/Y') }}</div>
                                 @endif
