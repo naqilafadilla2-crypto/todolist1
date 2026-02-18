@@ -216,7 +216,7 @@
     <div class="menu">
             @if(auth()->user()->role === 'admin')
         <a href="{{ route('menu') }}" class="{{ request()->routeIs('menu') ? 'active' : '' }}">
-                    Dashboard
+                    Dasbor
         </a>
 
         <a href="{{ route('applink.index') }}" class="{{ request()->routeIs('applink.*') ? 'active' : '' }}">
@@ -224,24 +224,23 @@
         </a>
 
                 <a href="{{ route('monitoring.index') }}" class="{{ request()->routeIs('monitoring.*') && !request()->routeIs('monitoring.user.*') ? 'active' : '' }}">
-                    Monitoring
+                    Pantau
         </a>
 
         <a href="{{ route('laporan') }}" class="{{ request()->routeIs('laporan') ? 'active' : '' }}">
                     Laporan
         </a>
-
-        <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.*') ? 'active' : '' }}">
-                   User
+            <a href="{{ route('rack.index') }}" class="{{ request()->routeIs('rack.*') ? 'active' : '' }}">
+                   Kelola Rack
                 </a>
 
-                <a href="{{ route('rack.index') }}" class="{{ request()->routeIs('rack.*') ? 'active' : '' }}">
-                   Rack Management
-                </a>
+             <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.*') ? 'active' : '' }}">
+                   Pengguna
+                </a>    
             @else
 
             <a href="{{ route('menu') }}" class="{{ request()->routeIs('menu') ? 'active' : '' }}">
-                    Dashboard
+                    Dasbor
                 </a>
                 <a href="{{ route('monitoring.user.dashboard') }}" class="{{ request()->routeIs('monitoring.user.*') || request()->routeIs('dashboard') ? 'active' : '' }}">
                     Menu Aplikasi
@@ -258,7 +257,7 @@
     <div class="logout">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button> Logout</button>
+            <button> Keluar</button>
         </form>
     </div>
 

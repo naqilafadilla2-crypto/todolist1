@@ -470,7 +470,7 @@
         <div class="dashboard-header-content">
             <div>
                 <h1>Aplikasi Pemantauan Pengecekan Layanan Bakti</h1>
-                <p class="subtitle">Status Aplikasi Realtime</p>
+                <p class="subtitle">Status Aplikasi </p>
             </div>
             <div class="user-info">
                 <div class="welcome">Selamat Datang, <strong>{{ auth()->user()->name }}</strong></div>
@@ -592,10 +592,10 @@ foreach ($applinks as $app) {
         <!-- TOTAL -->
         <div>
             <div class="summary-card-header">
-                <h4>Total Monitoring</h4>
+                <h4>Total Pantauan</h4>
             </div>
             <h2>{{ $totalHariIni }}</h2>
-            <div class="change">Data monitoring hari ini</div>
+            <div class="change">Data pantauan hari ini</div>
         </div>
 
         <!-- HIJAU -->
@@ -635,17 +635,15 @@ foreach ($applinks as $app) {
 <div class="summary-grid">
     <div class="summary-card primary">
         <div class="summary-card-header">
-            <h4>Total Monitoring</h4>
-            <div class="summary-card-icon"></div>
+            <h4>Total Pantauan</h4>
         </div>
         <h2>{{ $totalTahunIni }}</h2>
-        <div class="change">Data monitoring tahun ini</div>
+        <div class="change">Data pantauan tahun ini</div>
     </div>
 
     <div class="summary-card success">
         <div class="summary-card-header">
             <h4>Status Hijau</h4>
-            <div class="summary-card-icon"></div>
         </div>
         <h2>{{ $hijauTahunIni }}</h2>
         <div class="change">Normal sepanjang tahun</div>
@@ -654,7 +652,6 @@ foreach ($applinks as $app) {
     <div class="summary-card warning">
         <div class="summary-card-header">
             <h4>Status Kuning</h4>
-            <div class="summary-card-icon"></div>
         </div>
         <h2>{{ $kuningTahunIni }}</h2>
         <div class="change">Perlu perhatian tahun ini</div>
@@ -663,7 +660,6 @@ foreach ($applinks as $app) {
     <div class="summary-card danger">
         <div class="summary-card-header">
             <h4>Status Merah</h4>
-            <div class="summary-card-icon"></div>
         </div>
         <h2>{{ $merahTahunIni }}</h2>
         <div class="change">Gangguan tahun ini</div>
@@ -687,7 +683,7 @@ foreach ($applinks as $app) {
     @endphp
     
     <div class="chart-section">
-        <h3 class="section-title">Dashboard Monitoring & Rack Management</h3>
+        <h3 class="section-title">Dasbor Pemantauan & Kelola Rack</h3>
         
         <div class="chart-container" style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;">
             <!-- Chart Monitoring Overall -->
@@ -751,14 +747,13 @@ foreach ($applinks as $app) {
     @endphp
 
     <div class="chart-section" style="margin-top: 30px;">
-        <h3 class="section-title">Detail Rack Management</h3>
+        <h3 class="section-title">Detail Kelola Rack</h3>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
             <!-- RACK SUMMARY CARDS -->
             <div class="summary-card primary">
                 <div class="summary-card-header">
                     <h4>Total Rack</h4>
-                    <div class="summary-card-icon">🗄️</div>
                 </div>
                 <h2>{{ $totalRacks }}</h2>
                 <div class="change">Jumlah rack keseluruhan</div>
@@ -767,7 +762,6 @@ foreach ($applinks as $app) {
             <div class="summary-card success">
                 <div class="summary-card-header">
                     <h4>Rack Online</h4>
-                    <div class="summary-card-icon">✅</div>
                 </div>
                 <h2>{{ $onlineRacks }}</h2>
                 <div class="change">Rack yang aktif</div>
@@ -776,7 +770,6 @@ foreach ($applinks as $app) {
             <div class="summary-card danger">
                 <div class="summary-card-header">
                     <h4>Rack Offline</h4>
-                    <div class="summary-card-icon">❌</div>
                 </div>
                 <h2>{{ $offlineRacks }}</h2>
                 <div class="change">Rack yang tidak aktif</div>
@@ -840,7 +833,7 @@ foreach ($applinks as $app) {
                 <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 12px; color: #999;">
                     <div style="font-size: 48px; margin-bottom: 15px;">🗄️</div>
                     <p style="font-size: 16px; margin: 0;">
-                        Belum ada rack. Buat rack baru di menu <b>Rack Management</b>.
+                        Belum ada rack. Buat rack baru di menu <b>Kelola Rack</b>.
                     </p>
                 </div>
             @endif
@@ -887,7 +880,7 @@ foreach ($applinks as $app) {
                         </div>
                     </div>
                 @else
-                    <div class="menu-no-data">Belum ada data monitoring</div>
+                    <div class="menu-no-data">Belum ada data pantauan</div>
                 @endif
                 
                 <a href="{{ $app->url }}" target="_blank" class="btn-visit">
