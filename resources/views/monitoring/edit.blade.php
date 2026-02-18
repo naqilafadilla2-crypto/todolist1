@@ -33,7 +33,7 @@
 <div class="page-container">
     <div class="page-header">
         <a href="{{ route('monitoring.index') }}" class="btn-back">← Kembali</a>
-        <h2>Edit Data Monitoring</h2>
+        <h2>Edit Data Pantauan</h2>
     </div>
 
     <div class="card">

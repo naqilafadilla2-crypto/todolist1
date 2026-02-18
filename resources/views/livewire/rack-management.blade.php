@@ -458,7 +458,7 @@
     <div style="padding: 30px 20px; background: #f5f7fa; min-height: 100vh;">
         <!-- mengupdate tampilan -->
         <div class="rack-management-header">
-            <h2>Rack Management System</h2>
+            <h2>Kelola Sistem Rack</h2>
             <div class="header-actions">
                 <button wire:click="openRackModal()" class="btn-add-rack" title="Tambah rack baru">
                     Tambah Rack

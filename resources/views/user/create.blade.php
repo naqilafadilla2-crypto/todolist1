@@ -95,7 +95,7 @@
 <div class="page-container">
     <div class="page-header">
         <a href="{{ route('user.index') }}" class="btn-back">← Kembali</a>
-        <h2>Tambah User Baru</h2>
+        <h2>Tambah Pengguna Baru</h2>
     </div>
 
     <div class="card">
@@ -144,7 +144,7 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn-submit">Simpan User</button>
+            <button type="submit" class="btn-submit">Simpan Pengguna</button>
         </form>
     </div>
 </div>

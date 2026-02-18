@@ -136,8 +136,8 @@
 
 <div class="page-container">
     <div class="page-header">
-        <h2>User</h2>
-        <a href="{{ route('user.create') }}" class="btn-add">+ Tambah User</a>
+        <h2>Pengguna</h2>
+        <a href="{{ route('user.create') }}" class="btn-add">+ Tambah Pengguna</a>
     </div>
 
     @if(session('success'))

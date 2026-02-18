@@ -118,7 +118,7 @@
 
 <div class="page-container">
     <div class="page-header">
-        <h2>Monitoring Semua Aplikasi</h2>
+        <h2>Pantau Semua Aplikasi</h2>
         <a href="{{ route('monitoring.create') }}" class="btn-add">+ Tambah Data</a>
     </div>
 

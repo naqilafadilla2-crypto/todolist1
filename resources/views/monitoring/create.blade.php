@@ -189,7 +189,7 @@ textarea {
 <div class="page-container">
     <div class="page-header">
         <a href="{{ route('monitoring.index') }}" class="btn-back">← Kembali</a>
-        <h2>Tambah Data Monitoring</h2>
+        <h2>Tambah Data Pantauan</h2>
     </div>
 
     <div class="card">
