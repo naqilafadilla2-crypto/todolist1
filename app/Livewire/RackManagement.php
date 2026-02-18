@@ -589,6 +589,32 @@ class RackManagement extends Component
         $this->dispatch('rack-saved');
     }
 
+    public function updateRackStatus()
+    {
+        $racks = Rack::with('devices')->get();
+        
+        foreach ($racks as $rack) {
+            $totalDevices = $rack->devices()->count();
+            
+            if ($totalDevices === 0) {
+                // Rack tanpa device dianggap offline
+                $rack->update([
+                    'status_online' => 'offline',
+                    'last_checked_at' => now(),
+                ]);
+            } else {
+                // Jika ada minimal 1 device online, rack dianggap online
+                $onlineCount = $rack->devices()->where('status', 'online')->count();
+                $rackStatus = $onlineCount > 0 ? 'online' : 'offline';
+                
+                $rack->update([
+                    'status_online' => $rackStatus,
+                    'last_checked_at' => now(),
+                ]);
+            }
+        }
+    }
+
     public function deleteRack($rackId)
     {
         $rack = Rack::find($rackId);

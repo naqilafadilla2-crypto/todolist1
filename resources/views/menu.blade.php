@@ -670,14 +670,29 @@ foreach ($applinks as $app) {
     </div>
 </div>
 
-    <!-- CHART SECTION -->
-    <div class="chart-section">
-        <h3 class="section-title">Status Monitoring Keseluruhan</h3>
+    <!-- CHART SECTION - MONITORING & RACK STATUS -->
+    @php
+        use App\Models\Rack;
         
-        <div class="chart-container">
-            <!-- Chart Overall -->
+        // Rack data
+        $racks = Rack::with('devices')->get();
+        $totalRacks = $racks->count();
+        $onlineRacks = $racks->filter(function($rack) { return $rack->status_online === 'online'; })->count();
+        $offlineRacks = $totalRacks - $onlineRacks;
+        
+        // Rack pie chart angles
+        $persenOnlineRack = $totalRacks > 0 ? round(($onlineRacks / $totalRacks) * 100, 1) : 0;
+        $persenOfflineRack = $totalRacks > 0 ? round(($offlineRacks / $totalRacks) * 100, 1) : 0;
+        $onlineRackAngle = $persenOnlineRack * 3.6;
+    @endphp
+    
+    <div class="chart-section">
+        <h3 class="section-title">Dashboard Monitoring & Rack Management</h3>
+        
+        <div class="chart-container" style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;">
+            <!-- Chart Monitoring Overall -->
             <div class="chart-box">
-                <h4>Semua Aplikasi</h4>
+                <h4>Status Aplikasi</h4>
                 <div class="pie-chart" style="--hijau-angle: {{ $hijauAngle }}deg; --kuning-angle: {{ $kuningAngle }}deg;"></div>
                 <div class="chart-legend">
                     <div class="legend-item">
@@ -697,6 +712,138 @@ foreach ($applinks as $app) {
                     </div>
                 </div>
             </div>
+
+            <!-- Chart Rack Status -->
+            <div class="chart-box">
+                <h4>Status Rack</h4>
+                @if($totalRacks > 0)
+                    <div class="pie-chart" style="--hijau-angle: {{ $onlineRackAngle }}deg; --kuning-angle: {{ $onlineRackAngle }}deg; background: conic-gradient(
+                        #2ecc71 0deg {{ $onlineRackAngle }}deg,
+                        #e74c3c {{ $onlineRackAngle }}deg 360deg
+                    );"></div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-color legend-hijau"></span>
+                            <span>Online</span>
+                            <span class="legend-percent">{{ $persenOnlineRack }}% ({{ $onlineRacks }})</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color legend-merah"></span>
+                            <span>Offline</span>
+                            <span class="legend-percent">{{ $persenOfflineRack }}% ({{ $offlineRacks }})</span>
+                        </div>
+                    </div>
+                @else
+                    <div style="text-align: center; padding: 30px; color: #999;">
+                        <p style="font-size: 14px;">Belum ada rack</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- RACK MANAGEMENT STATUS - SUMMARY & LIST -->
+    @php
+        $racks = Rack::with('devices')->get();
+        $totalRacks = $racks->count();
+        $onlineRacks = $racks->filter(function($rack) { return $rack->status_online === 'online'; })->count();
+        $offlineRacks = $totalRacks - $onlineRacks;
+    @endphp
+
+    <div class="chart-section" style="margin-top: 30px;">
+        <h3 class="section-title">Detail Rack Management</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <!-- RACK SUMMARY CARDS -->
+            <div class="summary-card primary">
+                <div class="summary-card-header">
+                    <h4>Total Rack</h4>
+                    <div class="summary-card-icon">🗄️</div>
+                </div>
+                <h2>{{ $totalRacks }}</h2>
+                <div class="change">Jumlah rack keseluruhan</div>
+            </div>
+
+            <div class="summary-card success">
+                <div class="summary-card-header">
+                    <h4>Rack Online</h4>
+                    <div class="summary-card-icon">✅</div>
+                </div>
+                <h2>{{ $onlineRacks }}</h2>
+                <div class="change">Rack yang aktif</div>
+            </div>
+
+            <div class="summary-card danger">
+                <div class="summary-card-header">
+                    <h4>Rack Offline</h4>
+                    <div class="summary-card-icon">❌</div>
+                </div>
+                <h2>{{ $offlineRacks }}</h2>
+                <div class="change">Rack yang tidak aktif</div>
+            </div>
+        </div>
+
+        <!-- RACK LIST -->
+        <div style="margin-top: 20px;">
+            <h4 style="color: #2c2f7e; margin-bottom: 15px; font-weight: 600;">Daftar Rack Detail</h4>
+            
+            @if($totalRacks > 0)
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+                    @foreach($racks as $rack)
+                        @php
+                            $totalDevices = $rack->getTotalDevicesCount();
+                            $onlineDevices = $rack->getOnlineDevicesCount();
+                            $offlineDevices = $rack->getOfflineDevicesCount();
+                            $statusColor = $rack->status_online === 'online' ? '#2ecc71' : '#e74c3c';
+                            $statusText = $rack->status_online === 'online' ? 'Online' : 'Offline';
+                        @endphp
+                        <div style="background: white; border: 2px solid {{ $statusColor }}; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <h5 style="margin: 0; color: #2c2f7e; font-weight: 600;">{{ $rack->name }}</h5>
+                                <span style="background: {{ $statusColor }}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+                                    {{ $statusText }}
+                                </span>
+                            </div>
+                            
+                            @if($rack->description)
+                                <p style="font-size: 13px; color: #666; margin: 0 0 12px 0;">{{ $rack->description }}</p>
+                            @endif
+                            
+                            <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                                    <span style="color: #666;">Total Devices:</span>
+                                    <strong style="color: #2c2f7e;">{{ $totalDevices }} / {{ $rack->total_units }}U</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                                    <span style="color: #666;">Online:</span>
+                                    <strong style="color: #2ecc71;">{{ $onlineDevices }}</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                                    <span style="color: #666;">Offline:</span>
+                                    <strong style="color: #e74c3c;">{{ $offlineDevices }}</strong>
+                                </div>
+                            </div>
+                            
+                            @if($rack->last_checked_at)
+                                <div style="font-size: 11px; color: #999; text-align: right;">
+                                    Pengecekan: {{ $rack->last_checked_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') }} WIB
+                                </div>
+                            @endif
+                            
+                            <a href="{{ route('rack.index') }}" style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: linear-gradient(135deg, #2c2f7e 0%, #4a55d4 100%); color: white; text-decoration: none; border-radius: 6px; font-size: 12px; font-weight: 600;">
+                                Detail Rack
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 12px; color: #999;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">🗄️</div>
+                    <p style="font-size: 16px; margin: 0;">
+                        Belum ada rack. Buat rack baru di menu <b>Rack Management</b>.
+                    </p>
+                </div>
+            @endif
         </div>
     </div>
 

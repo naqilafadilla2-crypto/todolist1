@@ -6,7 +6,7 @@
     <title>@yield('title', 'Aplikasi')</title>
 
 @livewireStyles
-
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * {
             margin: 0;
@@ -17,23 +17,31 @@
 
         body {
             display: flex;
+            flex-direction: column;
             min-height: 100vh;
         background: #1a1f3c;
         }
 
-    /* ===== SIDEBAR ===== */
-        .sidebar {
-            width: 260px;
-        background: linear-gradient(180deg, #2c2f7e, #1c1f5c);
-            color: #fff;
-            padding: 30px 20px;
-            position: fixed;
-            height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        box-shadow: 4px 0 20px rgba(0,0,0,0.3);
-    }
+        .main-wrapper {
+            display: flex;
+            flex: 1;
+        }
+
+    .sidebar {
+    width: 260px;
+    background: linear-gradient(180deg, #2c2f7e, #1c1f5c);
+    color: #fff;
+    padding: 30px 20px;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    /* HAPUS justify-content: space-between */
+
+    min-height: 100vh; /* 🔥 ini yang bikin biru tetap penuh */
+    box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+}
+
 
     /* ===== LOGO ===== */
     .logo {
@@ -70,10 +78,9 @@
 
     /* ===== MENU ===== */
     .menu {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
+    display: flex;
+    flex-direction: column;
+}
 
         .menu a {
             display: flex;
@@ -109,8 +116,9 @@
 
     /* ===== LOGOUT ===== */
         .logout {
-        margin-top: 30px;
-        }
+    margin-top: 20px; /* jarak aman dari menu */
+}
+
 
         .logout button {
             width: 100%;
@@ -131,18 +139,68 @@
         box-shadow: 0 10px 22px rgba(255,77,77,0.55);
         }
 
-    /* ===== CONTENT ===== */
-        .content {
-            margin-left: 260px;
-        padding: 32px;
-            width: calc(100% - 260px);
-        background: #f4f6fb;
-        min-height: 100vh;
-        }
+    .content {
+    flex: 1;
+    padding: 32px;
+    background: #f4f6fb;
+}
+
+        /* ===== FOOTER FULL WIDTH ===== */
+.main-footer {
+    background: linear-gradient(180deg, #2c2f7e, #1c1f5c);
+    color: #e6e8ff;
+    padding: 50px 0 20px;
+}
+
+.footer-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 32px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    font-size: 14px;
+}
+
+.main-footer h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #ffcc00;
+}
+
+.main-footer p {
+    line-height: 1.8;
+}
+
+.main-footer a {
+    color: #ffcc00;
+    text-decoration: none;
+}
+
+.main-footer a:hover {
+    text-decoration: underline;
+    color: #ffffff;
+}
+
+.footer-bottom {
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    text-align: center;
+    font-size: 12px;
+}
+
+
     </style>
 </head>
 <body>
 
+<div class="main-wrapper">
 <div class="sidebar">
 
     <div>
@@ -209,7 +267,45 @@
 <div class="content">
     @yield('content')
 </div>
+</div>
 
+<!-- FOOTER -->
+<footer style="background: linear-gradient(180deg, #2c2f7e, #1c1f5c); color: #fff;" class="text-white">
+    <div class="px-4 sm:px-6 py-10" style="margin-left: 0;">
+        <div class="grid md:grid-cols-3 gap-8 text-sm">
+            <div>
+                <h3 class="font-semibold mb-3">Alamat Kantor</h3>
+                <p style="color: #e6e8ff;">
+                    Centennial Tower Lt. 42-45<br>
+                    Jl. Gatot Subroto Kav. 24-25<br>
+                    Jakarta 12930
+                </p>
+            </div>
+
+            <div>
+                <h3 class="font-semibold mb-3">Kontak</h3>
+                <p style="color: #e6e8ff;">Telepon: (021) 3193 6590</p>
+                <p style="color: #e6e8ff;">
+                    Email:
+                    <a href="mailto:humas@baktikominfo.id" class="underline hover:text-white">
+                        humas@baktikominfo.id
+                    </a>
+                </p>
+            </div>
+
+            <div>
+                <h3 class="font-semibold mb-3">Jam Operasional</h3>
+                <p style="color: #e6e8ff;">Senin - Jumat</p>
+                <p style="color: #e6e8ff;">08.00 - 17.00 WIB</p>
+                <p style="color: #e6e8ff;">Layanan Online: 24 Jam</p>
+            </div>
+        </div>
+
+        <div class="border-t mt-8 pt-4 text-center text-xs" style="border-color: rgba(255,255,255,0.2); color: #e6e8ff;">
+            © {{ date('Y') }} AppLink -  @ Bakti Komdigi 2026.
+        </div>
+    </div>
+</footer>
 @livewireScripts
 </body>
 </html>
