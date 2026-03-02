@@ -393,6 +393,19 @@
         .checklist-table td {
             padding: 8px;
         }
+
+        .status-icon-btn {
+    background: none;
+    border: none;
+    font-size: 16px; /* ubah sesuai kebutuhan */
+    cursor: pointer;
+    padding: 4px;
+    transition: all 0.2s ease;
+}
+
+.status-icon-btn:hover {
+    transform: scale(1.15);
+}
     }
 </style>
 
@@ -484,9 +497,13 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="quarter" value="q1">
-                                    <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
-                                        {{ $checklist->status_q1 === 'selesai' ? '✅' : ($checklist->status_q1 === 'proses' ? '⏳' : '❌') }}
-                                    </button>
+                                   <button type="submit" 
+                                    style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" 
+                                    onmouseover="this.style.transform='scale(1.2)'" 
+                                    onmouseout="this.style.transform='scale(1)'">
+                                    
+                                    {{ $checklist->status_q1 === 'selesai' ? '✅' : ($checklist->status_q1 === 'proses' ? '⏳' : '❌') }}
+                                </button>
                                 </form>
                                 @if($checklist->status_q1 === 'selesai' && $checklist->tanggal_q1)
                                     <div style="font-size: 10px; color: #999;">{{ $checklist->tanggal_q1->format('d/m/Y') }}</div>
@@ -499,9 +516,13 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="quarter" value="q2">
-                                    <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
-                                        {{ $checklist->status_q2 === 'selesai' ? '✅' : ($checklist->status_q2 === 'proses' ? '⏳' : '❌') }}
-                                    </button>
+                                   <button type="submit" 
+                                    style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" 
+                                    onmouseover="this.style.transform='scale(1.2)'" 
+                                    onmouseout="this.style.transform='scale(1)'">
+                                    
+                                    {{ $checklist->status_q2 === 'selesai' ? '✅' : ($checklist->status_q2 === 'proses' ? '⏳' : '❌') }}
+                                </button>
                                 </form>
                                 @if($checklist->status_q2 === 'selesai' && $checklist->tanggal_q2)
                                     <div style="font-size: 10px; color: #999;">{{ $checklist->tanggal_q2->format('d/m/Y') }}</div>
@@ -514,7 +535,7 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="quarter" value="q3">
-                                    <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                                    <button type="submit" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
                                         {{ $checklist->status_q3 === 'selesai' ? '✅' : ($checklist->status_q3 === 'proses' ? '⏳' : '❌') }}
                                     </button>
                                 </form>
@@ -529,7 +550,7 @@
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="quarter" value="q4">
-                                    <button type="submit" style="background: none; border: none; font-size: 24px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                                   <button type="submit" style="background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px; transition: all 0.2s ease; transform: scale(1);" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
                                         {{ $checklist->status_q4 === 'selesai' ? '✅' : ($checklist->status_q4 === 'proses' ? '⏳' : '❌') }}
                                     </button>
                                 </form>
