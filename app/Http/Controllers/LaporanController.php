@@ -134,7 +134,6 @@ public function pdf(Request $request)
         $query->whereDate('tanggal', '<=', $request->tanggal_sampai);
     }
 
-    // 🔥 Ambil data (kalau mau batasi 1000 bisa tambahin ->limit(1000))
     $monitorings = $query->orderBy('tanggal', 'desc')->get();
 
     // 🔥 Cek kalau data kosong
