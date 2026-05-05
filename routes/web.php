@@ -20,9 +20,7 @@ Route::post('/signin', [LoginController::class, 'signinProcess'])->name('signin.
 Route::middleware(['auth'])->group(function () {
 
     // Menu utama
-    Route::get('/menu', function () {
-        return view('menu');
-    })->name('menu');
+    Route::get('/menu', [MonitoringController::class, 'dashboard'])->name('menu');
 
     // Halaman Task
 

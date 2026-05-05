@@ -13,6 +13,7 @@ class MaintenanceChecklist extends Model
         'tanggal_q1', 'tanggal_q2', 'tanggal_q3', 'tanggal_q4',
         'checked_q1', 'checked_q2', 'checked_q3', 'checked_q4',
         'keterangan',
+        'expired_date',
     ];
 
     protected $casts = [
@@ -20,6 +21,7 @@ class MaintenanceChecklist extends Model
         'tanggal_q2' => 'date',
         'tanggal_q3' => 'date',
         'tanggal_q4' => 'date',
+        'expired_date' => 'date',
     ];
 
     public function getStatusIconAttribute()

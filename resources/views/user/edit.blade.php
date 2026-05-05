@@ -15,7 +15,7 @@
     }
 
     .page-header h2 {
-        color: #2c2f7e;
+        color: #0a978e;
         font-size: 24px;
         margin: 0 0 10px 0;
     }
@@ -61,7 +61,7 @@
     }
 
     input:focus, select:focus {
-        border-color: #2c2f7e;
+        border-color: #0a978e;
     }
 
     .error {
@@ -71,7 +71,7 @@
     }
 
     .btn-submit {
-        background: #2c2f7e;
+        background: #0a978e;
         color: white;
         padding: 12px 30px;
         border: none;

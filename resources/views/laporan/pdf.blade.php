@@ -58,23 +58,96 @@
         .hijau { background:#28a745; }
         .kuning { background:#f1c40f; color:#000; }
         .merah { background:#dc3545; }
+        /* ===== CHART (seperti contoh) ===== */
+.laporan-chart-wrap {
+    margin: 10px 0 24px;
+}
+.laporan-chart-box {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.laporan-chart-canvas {
+    flex: 1;
+    min-width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    padding: 20px 24px;
+    height: 320px;
+}
+.laporan-chart-legend {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.laporan-legend-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.laporan-legend-swatch {
+    width: 56px;
+    height: 22px;
+    border-radius: 3px;
+}
+.laporan-legend-hijau { background: #2ecc71; }
+.laporan-legend-kuning { background: #f1c40f; }
+.laporan-legend-merah { background: #e74c3c; }
+.laporan-chart-title {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #2c2f7e;
+}
     </style>
 </head>
 <body>
 
 @php
-    $totalHijau = 0;
-    $totalKuning = 0;
-    $totalMerah = 0;
-
-    foreach ($monitorings as $m) {
-        if ($m->status === 'hijau') $totalHijau++;
-        elseif ($m->status === 'kuning') $totalKuning++;
-        elseif ($m->status === 'merah') $totalMerah++;
-    }
+    // Gunakan total dari controller (hitung dari grafik data)
+    $totalHijau = $totalHijau ?? 0;
+    $totalKuning = $totalKuning ?? 0;
+    $totalMerah = $totalMerah ?? 0;
 @endphp
 
 <h3>Laporan Monitoring{{ $periodLabel ? ' - ' . $periodLabel : '' }}</h3>
+        <!-- GRAFIK PANTAU -->
+        <div class="laporan-chart-wrap">
+            <div class="laporan-chart-box">
+                <div class="laporan-chart-canvas">
+                    @if(isset(
+                        $chartImage
+                    ) && $chartImage)
+                        <img src="{{ $chartImage }}" style="width:100%;height:100%;" />
+                    @else
+                        <p style="text-align:center;color:#888;">(grafik tidak tersedia)</p>
+                    @endif
+                </div>
+                <div class="laporan-chart-legend">
+                    <div class="laporan-legend-row">
+                        <span class="laporan-legend-swatch laporan-legend-hijau"></span>
+                        <span>Hijau (baik)</span>
+                    </div>
+                    <div class="laporan-legend-row">
+                        <span class="laporan-legend-swatch laporan-legend-kuning"></span>
+                        <span>Kuning (perlu perhatian)</span>
+                    </div>
+                    <div class="laporan-legend-row">
+                        <span class="laporan-legend-swatch laporan-legend-merah"></span>
+                        <span>Merah (bermasalah)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="laporan-chart-title">
+                {{ $chartTitle ?? 'Grafik Pantau' }}
+            </div>
+        </div>
 
 <!-- RINGKASAN STATUS -->
 <table class="summary">

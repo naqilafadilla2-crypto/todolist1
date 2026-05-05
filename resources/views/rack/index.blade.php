@@ -27,7 +27,7 @@
             </div>
             <div style="display: flex; gap: 10px; justify-content: flex-end;">
                 <button type="button" onclick="closeRackModal()" style="padding: 10px 20px; background: #ccc; border: none; border-radius: 5px; cursor: pointer;">Batal</button>
-                <button type="submit" style="padding: 10px 20px; background: #2c2f7e; color: white; border: none; border-radius: 5px; cursor: pointer;">Simpan</button>
+                <button type="submit" style="padding: 10px 20px; background: #0a978e; color: white; border: none; border-radius: 5px; cursor: pointer;">Simpan</button>
             </div>
         </form>
     </div>

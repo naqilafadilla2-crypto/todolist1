@@ -12,15 +12,26 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use Carbon\Carbon;
 
-class LaporanExport implements FromCollection, WithHeadings, WithMapping, WithStyles
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+
+class LaporanExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithDrawings
 {
     protected $monitorings;
     protected $periodLabel;
+    protected $chartImage;
+    protected $totalHijau;
+    protected $totalKuning;
+    protected $totalMerah;
 
-    public function __construct($monitorings, $periodLabel = '')
+    public function __construct($monitorings, $periodLabel = '', $chartImage = null, $totalHijau = 0, $totalKuning = 0, $totalMerah = 0)
     {
         $this->monitorings = $monitorings;
         $this->periodLabel = $periodLabel;
+        $this->chartImage = $chartImage;
+        $this->totalHijau = $totalHijau;
+        $this->totalKuning = $totalKuning;
+        $this->totalMerah = $totalMerah;
     }
 
     /**
@@ -88,5 +99,33 @@ class LaporanExport implements FromCollection, WithHeadings, WithMapping, WithSt
                 ],
             ],
         ];
+    }
+
+    /**
+     * Add chart image as a drawing to the sheet
+     *
+     * @return Drawing[]
+     */
+    public function drawings()
+    {
+        if (! $this->chartImage) {
+            return [];
+        }
+
+        // strip data URI prefix if present
+        $base64 = preg_replace('#^data:image/\w+;base64,#i', '', $this->chartImage);
+        $imageData = base64_decode($base64);
+        $tmp = sys_get_temp_dir() . '/chart_' . uniqid() . '.png';
+        file_put_contents($tmp, $imageData);
+
+        $drawing = new Drawing();
+        $drawing->setName('Grafik Pantau');
+        $drawing->setDescription('Grafik status 30 hari');
+        $drawing->setPath($tmp);
+        $drawing->setHeight(200);
+        // place near top right corner
+        $drawing->setCoordinates('H2');
+
+        return [$drawing];
     }
 }

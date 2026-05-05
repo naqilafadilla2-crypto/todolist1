@@ -6,14 +6,14 @@
 <style>
     .page-container { max-width: 700px; margin: auto; padding: 20px; }
     .page-header { margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; }
-    .page-header h2 { color: #2c2f7e; font-size: 24px; margin: 0 0 10px 0; }
+    .page-header h2 { color: #0a978e; font-size: 24px; margin: 0 0 10px 0; }
     .btn-back { background: #6c757d; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; }
     .btn-back:hover { background: #5a6268; }
     .card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .form-group { margin-bottom: 20px; }
     label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
     input, select, textarea { width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
-    input:focus, select:focus, textarea:focus { border-color: #2c2f7e; }
+    input:focus, select:focus, textarea:focus { border-color: #0a978e; }
     textarea { resize: vertical; min-height: 100px; }
     .status-group { display: flex; gap: 20px; margin-top: 10px; }
     .status-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
@@ -22,11 +22,11 @@
     .green { background-color: #2ecc71; }
     .yellow { background-color: #f1c40f; }
     .red { background-color: #e74c3c; }
-    .status-item input[type="radio"]:checked + .dot { border-color: #2c2f7e; box-shadow: 0 0 0 2px rgba(44,47,126,0.3); }
+    .status-item input[type="radio"]:checked + .dot { border-color: #0a978e; box-shadow: 0 0 0 2px rgba(44,47,126,0.3); }
     .error { color: #dc3545; font-size: 13px; margin-top: 5px; }
-    .btn-submit { background: #2c2f7e; color: white; padding: 12px 30px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; }
-    .btn-submit:hover { background: #1f2258; }
-    .file-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid #2c2f7e; margin-right:8px; }
+    .btn-submit { background: #0a978e; color: white; padding: 12px 30px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; }
+    .btn-submit:hover { background: #0a978e; }
+    .file-thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid #0a978e; margin-right:8px; }
     .help-text { font-size: 12px; color: #666; margin-top: 4px; }
 </style>
 

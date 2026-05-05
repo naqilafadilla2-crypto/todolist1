@@ -6,11 +6,11 @@
 <style>
     .page-container { max-width: 900px; margin:auto; padding:20px; }
     .page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-    .page-header h2 { margin:0; color:#2c2f7e; }
-    .btn-add { background:#2c2f7e; color:#fff; padding:8px 16px; border-radius:8px; text-decoration:none; font-size:14px; }
+    .page-header h2 { margin:0; color:#0a978e; }
+    .btn-add { background:#0a978e; color:#fff; padding:8px 16px; border-radius:8px; text-decoration:none; font-size:14px; }
     table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
     th,td { padding:10px 12px; border-bottom:1px solid #eee; text-align:left; }
-    thead { background:#2c2f7e; color:#fff; }
+    thead { background:#0a978e; color:#fff; }
     .btn-edit { background:#3498db; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:13px; cursor:pointer; text-decoration:none; display:inline-block; margin-right:6px; }
     .btn-edit:hover { background:#2980b9; }
     .btn-delete { background:#e74c3c; color:#fff; border:none; padding:6px 12px; border-radius:6px; font-size:13px; cursor:pointer; }

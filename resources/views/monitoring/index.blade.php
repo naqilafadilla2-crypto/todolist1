@@ -18,13 +18,13 @@
     }
 
     .page-header h2 {
-        color: #2c2f7e;
+        color: #0a978e;
         font-size: 24px;
         margin: 0;
     }
 
     .btn-add {
-        background: #2c2f7e;
+        background: #0a978e;
         color: white;
         padding: 10px 20px;
         border-radius: 8px;
@@ -41,7 +41,7 @@
     }
 
     thead {
-        background: #2c2f7e;
+        background: #0a978e;
         color: white;
     }
 
@@ -77,7 +77,7 @@
         height: 60px;
         object-fit: cover;
         border-radius: 8px;
-        border: 2px solid #2c2f7e;
+        border: 2px solid #0a978e;
         cursor: pointer;
     }
 
@@ -97,7 +97,7 @@
 
     .page-btn {
         padding: 10px 22px;
-        background: #2c2f7e;
+        background: #0a978e;
         color: white;
         border-radius: 10px;
         text-decoration: none;
@@ -106,7 +106,7 @@
     }
 
     .page-btn:hover {
-        background: #1f2258;
+        background: #0a978e;
     }
 
     .page-btn.disabled {
@@ -202,5 +202,6 @@
             Next ➡
         </a>
     </div>
+
 </div>
 @endsection

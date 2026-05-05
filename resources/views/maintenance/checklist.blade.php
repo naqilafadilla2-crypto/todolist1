@@ -12,7 +12,7 @@
     }
 
     .maintenance-header {
-        background: linear-gradient(135deg, #2c2f7e 0%, #4a55d4 100%);
+        background: linear-gradient(135deg, #0a978e 0%, #0a978e 100%);
         color: white;
         padding: 30px;
         border-radius: 16px;
@@ -38,13 +38,13 @@
         padding: 20px;
         margin-bottom: 20px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        border-left: 4px solid #2c2f7e;
+        border-left: 4px solid #0a978e;
     }
 
     .checklist-title {
         font-size: 16px;
         font-weight: 700;
-        color: #2c2f7e;
+        color: #0a978e;
         margin: 0 0 20px 0;
         display: flex;
         align-items: center;
@@ -58,7 +58,7 @@
     }
 
     .checklist-table thead {
-        background:#2c2f7e; 
+        background:#0a978e; 
 ;
     }
 
@@ -130,7 +130,7 @@
     .status-dropdown a {
         display: block;
         padding: 8px 12px;
-        color: #2c2f7e;
+        color: #0a978e;
         text-decoration: none;
         border-radius: 4px;
         font-size: 12px;
@@ -166,13 +166,13 @@
     }
 
     .edit-keterangan-btn:hover {
-        background: #2c2f7e;
+        background: #0a978e;
         color: white;
-        border-color: #2c2f7e;
+        border-color: #0a978e;
     }
 
     .link-foto {
-        color: #2c2f7e;
+        color: #0a978e;
         text-decoration: none;
         font-size: 12px;
         padding: 4px 8px;
@@ -183,7 +183,7 @@
     }
 
     .link-foto:hover {
-        background: #2c2f7e;
+        background: #0a978e;
         color: white;
     }
 
@@ -248,7 +248,7 @@
 
     .modal-content h3 {
         margin-top: 0;
-        color: #2c2f7e;
+        color: #0a978e;
         font-weight: 700;
     }
 
@@ -260,7 +260,7 @@
         display: block;
         margin-bottom: 5px;
         font-weight: 600;
-        color: #2c2f7e;
+        color: #0a978e;
         font-size: 13px;
     }
 
@@ -277,7 +277,7 @@
 
     .form-group textarea:focus {
         outline: none;
-        border-color: #2c2f7e;
+        border-color: #0a978e;
         box-shadow: 0 0 0 3px rgba(44,47,126,0.1);
     }
 
@@ -308,7 +308,7 @@
     }
 
     .modal-btn-save {
-        background: linear-gradient(135deg, #2c2f7e 0%, #4a55d4 100%);
+        background: linear-gradient(135deg, #0a978e 0%, #0a978e 100%);
         color: white;
     }
 
@@ -361,7 +361,7 @@
     .summary-card-value {
         font-size: 32px;
         font-weight: 700;
-        color: #2c2f7e;
+        color: #0a978e;
         margin-bottom: 5px;
     }
 
@@ -370,6 +370,49 @@
         color: #666;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+    }
+
+    .expired-alert {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .expired-card {
+        padding: 16px;
+        border-radius: 12px;
+        border-left: 4px solid;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .expired-card.warning {
+        background: #fff8e1;
+        border-left-color: #fbc02d;
+        color: #f57f17;
+    }
+
+    .expired-card.danger {
+        background: #ffebee;
+        border-left-color: #c62828;
+        color: #b71c1c;
+    }
+
+    .expired-card.success {
+        background: #e8f5e9;
+        border-left-color: #2e7d32;
+        color: #1b5e20;
+    }
+
+    .expired-card-title {
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .expired-card-date {
+        font-size: 12px;
+        opacity: 0.8;
     }
 
     @media (max-width: 768px) {
@@ -426,10 +469,17 @@
     <!-- SUMMARY STATS -->
     @php
         $totalPerangkat = $checklists->count();
-        $totalQ1Selesai = $checklists->where('checked_q1', true)->count();
-        $totalQ2Selesai = $checklists->where('checked_q2', true)->count();
-        $totalQ3Selesai = $checklists->where('checked_q3', true)->count();
-        $totalQ4Selesai = $checklists->where('checked_q4', true)->count();
+        $totalQ1Selesai = 0;
+        $totalQ2Selesai = 0;
+        $totalQ3Selesai = 0;
+        $totalQ4Selesai = 0;
+        foreach($checklists as $c) {
+            $logs = $c->maintenanceLogs;
+            if($logs->whereBetween('tanggal', [now()->startOfYear()->month(1)->startOfMonth(), now()->startOfYear()->month(3)->endOfMonth()])->count()>0) $totalQ1Selesai++;
+            if($logs->whereBetween('tanggal', [now()->startOfYear()->month(4)->startOfMonth(), now()->startOfYear()->month(6)->endOfMonth()])->count()>0) $totalQ2Selesai++;
+            if($logs->whereBetween('tanggal', [now()->startOfYear()->month(7)->startOfMonth(), now()->startOfYear()->month(9)->endOfMonth()])->count()>0) $totalQ3Selesai++;
+            if($logs->whereBetween('tanggal', [now()->startOfYear()->month(10)->startOfMonth(), now()->startOfYear()->month(12)->endOfMonth()])->count()>0) $totalQ4Selesai++;
+        }
     @endphp
 
     <div class="summary-stats">
@@ -467,11 +517,90 @@
         </div>
     </div>
 
+    <!-- EXPIRED DATE NOTIFICATIONS -->
+    @php
+        $expiredItems = [];
+        $warningItems = [];
+        $safeItems = [];
+        $today = now()->startOfDay();
+        $warningDays = 30; // Warn 30 days before expiry
+
+        foreach($checklists as $checklist) {
+            if($checklist->expired_date) {
+                $expiredDate = $checklist->expired_date;
+                $expiredMonth = $expiredDate->month;
+                
+                // Determine the quarter based on expired month
+                if($expiredMonth >= 1 && $expiredMonth <= 3) {
+                    $relevantQuarter = 'q1';
+                } elseif($expiredMonth >= 4 && $expiredMonth <= 6) {
+                    $relevantQuarter = 'q2';
+                } elseif($expiredMonth >= 7 && $expiredMonth <= 9) {
+                    $relevantQuarter = 'q3';
+                } else {
+                    $relevantQuarter = 'q4';
+                }
+                
+                // Check if the relevant quarter is completed
+                $quarterCompleted = $checklist->{'status_' . $relevantQuarter} === 'selesai';
+                
+                // Only show expired notifications if the relevant quarter is not completed
+                if(!$quarterCompleted) {
+                    $daysLeft = $expiredDate->diffInDays($today, false);
+                    
+                    if($expiredDate < $today) {
+                        $expiredItems[] = [
+                            'perangkat' => $checklist->perangkat,
+                            'expired_date' => $expiredDate,
+                            'daysLeft' => $daysLeft
+                        ];
+                    } elseif($daysLeft <= $warningDays) {
+                        $warningItems[] = [
+                            'perangkat' => $checklist->perangkat,
+                            'expired_date' => $expiredDate,
+                            'daysLeft' => $daysLeft
+                        ];
+                    } else {
+                        $safeItems[] = [
+                            'perangkat' => $checklist->perangkat,
+                            'expired_date' => $expiredDate,
+                            'daysLeft' => $daysLeft
+                        ];
+                    }
+                }
+            }
+        }
+    @endphp
+
+    @if(count($expiredItems) > 0 || count($warningItems) > 0)
+        <div class="expired-alert">
+            @foreach($expiredItems as $item)
+                <div class="expired-card danger">
+                    <div class="expired-card-title">⚠️ {{ $item['perangkat'] }} - SUDAH EXPIRED</div>
+                    <div class="expired-card-date">
+                        Expired: {{ \Carbon\Carbon::parse($item['expired_date'])->format('d/m/Y') }} 
+                        ({{ abs($item['daysLeft']) }} hari yang lalu)
+                    </div>
+                </div>
+            @endforeach
+
+            @foreach($warningItems as $item)
+                <div class="expired-card warning">
+                    <div class="expired-card-title">⏰ {{ $item['perangkat'] }} - AKAN EXPIRED</div>
+                    <div class="expired-card-date">
+                        Expired: {{ \Carbon\Carbon::parse($item['expired_date'])->format('d/m/Y') }} 
+                        ({{ $item['daysLeft'] }} hari lagi)
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
     <!-- CHECKLIST TABLE -->
     <div class="checklist-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h2 class="checklist-title" style="margin: 0;">📋 Checklist Perawatan {{ date('Y') }}</h2>
-            <button type="button" onclick="openAddModal()" style="background: linear-gradient(135deg, #2c2f7e 0%, #4a55d4 100%); color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;">
+            <button type="button" onclick="openAddModal()" style="background: #0a978e; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;">
                 Tambah Perangkat
             </button>
         </div>
@@ -479,18 +608,38 @@
         <table class="checklist-table">
             <thead>
                 <tr>
-                    <th style="width: 25%;">Perangkat</th>
-                    <th style="width: 18%;">Q1 (Jan-Mar)</th>
-                    <th style="width: 18%;">Q2 (Apr-Jun)</th>
-                    <th style="width: 18%;">Q3 (Jul-Sep)</th>
-                    <th style="width: 18%;">Q4 (Oct-Dec)</th>
+                    <th style="width: 20%;">Perangkat</th>
+                    <th style="width: 12%;">Expired Date</th>
+                    <th style="width: 15%;">Q1 (Jan-Mar)</th>
+                    <th style="width: 15%;">Q2 (Apr-Jun)</th>
+                    <th style="width: 15%;">Q3 (Jul-Sep)</th>
+                    <th style="width: 15%;">Q4 (Oct-Dec)</th>
                     <th style="width: 3%; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($checklists as $checklist)
+                    @php
+                        // Expired date styling
+                        $expiredDateStyle = '';
+                        $expiredDateText = '-';
+                        if($checklist->expired_date) {
+                            $today = now()->startOfDay();
+                            $daysLeft = $checklist->expired_date->diffInDays($today, false);
+                            $expiredDateText = $checklist->expired_date->format('d/m/Y');
+                            
+                            if($checklist->expired_date < $today) {
+                                $expiredDateStyle = 'background: #ffebee; color: #c62828; font-weight: 600;';
+                            } elseif($daysLeft <= 30) {
+                                $expiredDateStyle = 'background: #fff8e1; color: #f57f17; font-weight: 600;';
+                            } else {
+                                $expiredDateStyle = 'color: #2e7d32; font-weight: 500;';
+                            }
+                        }
+                    @endphp
                     <tr>
                         <td><strong>{{ $checklist->perangkat }}</strong></td>
+                        <td style="text-align: center; {{ $expiredDateStyle }}">{{ $expiredDateText }}</td>
                         <td class="status-cell">
                             <div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px;">
                                 <form action="{{ route('maintenance.checklist.checkbox', $checklist->id) }}" method="POST" style="display: inline; margin: 0;">
@@ -560,7 +709,7 @@
                             </div>
                         </td>
                         <td style="text-align: center;">
-                            <button type="button" class="edit-btn" title="Edit" onclick="openEditPerangkatModal({{ $checklist->id }}, '{{ $checklist->perangkat }}')">
+                            <button type="button" class="edit-btn" title="Edit" onclick="openEditPerangkatModal({{ $checklist->id }}, '{{ $checklist->perangkat }}', '{{ $checklist->expired_date?->format('Y-m-d') ?? '' }}')">
                                 ✏️
                             </button>
                             <form action="{{ route('maintenance.checklist.delete', $checklist->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Hapus perangkat {{ $checklist->perangkat }}?');">
@@ -583,7 +732,7 @@
         @foreach($checklists as $checklist)
             <div style="margin-bottom: 30px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <strong style="color: #2c2f7e; font-size: 15px;">{{ $checklist->perangkat }}</strong>
+                    <strong style="color: #0a978e; font-size: 15px;">{{ $checklist->perangkat }}</strong>
                     <button type="button" onclick="openLogModal({{ $checklist->id }}, '{{ $checklist->perangkat }}')" class="edit-keterangan-btn">
                         Tambah Logbook
                     </button>
@@ -593,12 +742,13 @@
                     <table class="checklist-table" style="font-size: 12px;">
                         <thead>
      
-                            <tr style="background: #2c2f7e;;">
-                                <th style="padding: 10px; text-align: center; width: 12%;">TANGGAL</th>
-                                <th style="padding: 10px; text-align: center; width: 15%;">PIC</th>
-                                <th style="padding: 10px; text-align: center; width: 12%;">FOTO</th>
-                                <th style="padding: 10px; text-align: left; width: 50%;">KETERANGAN / KESIMPULAN</th>
-                                <th style="padding: 10px; text-align: center; width: 11%;">AKSI</th>
+                            <tr style="background: #0a978e;;">
+                                <th style="padding: 10px; text-align: center; width: 10%;">TANGGAL</th>
+                                <th style="padding: 10px; text-align: center; width: 12%;">PIC</th>
+                                <th style="padding: 10px; text-align: center; width: 10%;">FOTO</th>
+                                <th style="padding: 10px; text-align: center; width: 10%;">LAMPIRAN</th>
+                                <th style="padding: 10px; text-align: left; width: 40%;">KETERANGAN / KESIMPULAN</th>
+                                <th style="padding: 10px; text-align: center; width: 8%;">AKSI</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -607,8 +757,23 @@
                                     <td style="padding: 10px; text-align: center;">{{ $log->tanggal->format('d/m/Y') }}</td>
                                     <td style="padding: 10px; text-align: center;">{{ $log->pic }}</td>
                                     <td style="padding: 10px; text-align: center;">
-                                        @if($log->foto)
-                                            <img src="{{ asset('storage/' . $log->foto) }}" alt="Foto" style="max-width: 100px; max-height: 100px; border-radius: 6px; cursor: pointer; object-fit: cover;" onclick="openPhotoModal('{{ asset('storage/' . $log->foto) }}', '{{ $log->pic }}', '{{ $log->tanggal->format('d/m/Y') }}')">
+                                        @if($log->foto && count($log->foto) > 0)
+                                            <div style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
+                                                @foreach($log->foto as $foto)
+                                                    <img src="{{ asset('storage/' . $foto) }}" alt="Foto" style="max-width: 50px; max-height: 50px; border-radius: 4px; cursor: pointer; object-fit: cover;" onclick="openPhotoModal('{{ asset('storage/' . $foto) }}', '{{ $log->pic }}', '{{ $log->tanggal->format('d/m/Y') }}')">
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <span style="color: #999;">-</span>
+                                        @endif
+                                    </td>
+                                    <td style="padding: 10px; text-align: center;">
+                                        @if($log->lampiran && count($log->lampiran) > 0)
+                                            <div style="display: flex; flex-direction: column; gap: 3px; align-items: center;">
+                                                @foreach($log->lampiran as $lampiran)
+                                                    <a href="{{ asset('storage/' . $lampiran) }}" target="_blank" style="color: #2c2f7e; text-decoration: none; font-size: 11px; padding: 2px 6px; border-radius: 3px; background: #f0f0f0;" title="Download {{ pathinfo($lampiran, PATHINFO_BASENAME) }}">📎 {{ pathinfo($lampiran, PATHINFO_BASENAME) }}</a>
+                                                @endforeach
+                                            </div>
                                         @else
                                             <span style="color: #999;">-</span>
                                         @endif
@@ -664,8 +829,13 @@
             </div>
             <div class="form-group">
                 <label for="foto">Foto:</label>
-                <input type="file" id="foto" name="foto" accept="image/*" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
-                <small style="color: #999;">Ukuran maksimal: 2MB (JPG, PNG, GIF)</small>
+                <input type="file" id="foto" name="foto[]" accept="image/*" multiple style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+                <small style="color: #999;">Ukuran maksimal: 2MB per foto (JPG, PNG, GIF) - Bisa upload multiple</small>
+            </div>
+            <div class="form-group">
+                <label for="lampiran">Lampiran (PDF/Office):</label>
+                <input type="file" id="lampiran" name="lampiran[]" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" multiple style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+                <small style="color: #999;">Ukuran maksimal: 5MB per file (PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX) - Bisa upload multiple</small>
             </div>
             <div class="form-group">
                 <label for="logKeterangan">Keterangan / Kesimpulan:</label>
@@ -707,6 +877,11 @@
                     <div style="color: #e74c3c; font-size: 12px; margin-top: 5px;">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="form-group">
+                <label for="expired_date">Tanggal Expired (Kadaluarsa):</label>
+                <input type="date" id="expired_date" name="expired_date" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px;">
+                <small style="color: #999;">Opsional - Tanggal ketika perangkat tidak lagi berlaku atau perlu diganti</small>
+            </div>
             <div class="modal-buttons">
                 <button type="button" class="modal-btn modal-btn-cancel" onclick="closeAddModal()">Batal</button>
                 <button type="submit" class="modal-btn modal-btn-save" id="addModalBtn">Tambah Perangkat</button>
@@ -725,11 +900,12 @@ function openAddModal() {
     document.getElementById('addModalTitle').textContent = '➕ Tambah Perangkat Baru';
     document.getElementById('addModalBtn').textContent = 'Tambah Perangkat';
     document.getElementById('perangkat').value = '';
+    document.getElementById('expired_date').value = '';
     document.getElementById('perangkat').focus();
     document.getElementById('addModal').classList.add('active');
 }
 
-function openEditPerangkatModal(id, perangkat) {
+function openEditPerangkatModal(id, perangkat, expiredDate) {
     const form = document.getElementById('addForm');
     form.action = `{{ url('/maintenance-checklist') }}/${id}`;
     document.getElementById('formMethod').value = 'PUT';
@@ -737,6 +913,7 @@ function openEditPerangkatModal(id, perangkat) {
     document.getElementById('addModalTitle').textContent = '✏️ Edit Perangkat';
     document.getElementById('addModalBtn').textContent = 'Update Perangkat';
     document.getElementById('perangkat').value = perangkat;
+    document.getElementById('expired_date').value = expiredDate || '';
     document.getElementById('perangkat').focus();
     document.getElementById('perangkat').select();
     
@@ -746,6 +923,7 @@ function openEditPerangkatModal(id, perangkat) {
 function closeAddModal() {
     document.getElementById('addModal').classList.remove('active');
     document.getElementById('perangkat').value = '';
+    document.getElementById('expired_date').value = '';
     document.getElementById('addForm').action = `{{ route('maintenance.checklist.store') }}`;
     document.getElementById('formMethod').value = 'POST';
 }
@@ -763,6 +941,7 @@ function openLogModal(id, perangkat) {
     document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
     document.getElementById('pic').value = '';
     document.getElementById('foto').value = '';
+    document.getElementById('lampiran').value = '';
     document.getElementById('logKeterangan').value = '';
     
     // Change header and button text for create mode
@@ -804,6 +983,8 @@ function openEditLogModal(button) {
     // Populate form with data
     document.getElementById('tanggal').value = tanggal;
     document.getElementById('pic').value = pic;
+    document.getElementById('foto').value = ''; // Reset file input (can't set value for security)
+    document.getElementById('lampiran').value = ''; // Reset file input (can't set value for security)
     document.getElementById('logKeterangan').value = keterangan || '';
     
     document.getElementById('logModal').classList.add('active');
@@ -813,15 +994,6 @@ function closeLogModal() {
     document.getElementById('logModal').classList.remove('active');
     const methodInput = document.getElementById('logForm').querySelector('input[name="_method"]');
     if (methodInput) methodInput.remove();
-}
-function openAddModal() {
-    document.getElementById('addModal').classList.add('active');
-    document.getElementById('perangkat').focus();
-}
-
-function closeAddModal() {
-    document.getElementById('addModal').classList.remove('active');
-    document.getElementById('perangkat').value = '';
 }
 
 document.getElementById('logModal').onclick = function(event) {

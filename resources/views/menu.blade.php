@@ -4,6 +4,8 @@
 
 @section('content')
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
     * {
         box-sizing: border-box;
@@ -21,7 +23,7 @@
 
     /* HEADER */
     .dashboard-header {
-        background: linear-gradient(135deg, #2c2f7e 0%, #4a55d4 100%);
+        background: linear-gradient(135deg, #0a978e 0%, #0a978e 100%);
         color: white;
         padding: 30px;
         border-radius: 16px;
@@ -127,7 +129,7 @@
         font-size: 36px;
         margin: 0;
         font-weight: 700;
-        color: #2c2f7e;
+        color: #0a978e;
     }
 
     .summary-card .change {
@@ -169,7 +171,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #2c2f7e, #4a55d4);
+        background: linear-gradient(90deg, #0a978e, #0a978e);
         transform: scaleX(0);
         transition: transform 0.3s ease;
     }
@@ -177,7 +179,7 @@
     .menu-item:hover {
         transform: translateY(-8px);
         box-shadow: 0 12px 32px rgba(44,47,126,0.15);
-        border-color: #2c2f7e;
+        border-color: #0a978e;
     }
 
     .menu-item:hover::before {
@@ -204,7 +206,7 @@
 
     .menu-item h5 {
         font-size: 16px;
-        color: #2c2f7e;
+        color: #0a978e;
         margin-bottom: 10px;
         font-weight: 600;
     }
@@ -250,7 +252,7 @@
     .menu-stat-percent {
         font-weight: 600;
         font-size: 11px;
-        color: #2c2f7e;
+        color: #0a978e;
     }
 
     .menu-no-data {
@@ -261,7 +263,7 @@
     }
 
     .btn-visit {
-        background: linear-gradient(135deg, #2c2f7e 0%, #4a55d4 100%);
+        background: linear-gradient(135deg, #0a978e 0%, #0a978e 100%);
         color: white;
         padding: 12px 24px;
         border-radius: 10px;
@@ -276,9 +278,25 @@
     }
 
     .btn-visit:hover {
-        background: linear-gradient(135deg, #1f2258 0%, #2c2f7e 100%);
+        background: linear-gradient(135deg, #0a978e 0%, #0a978e 100%);
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(44, 47, 126, 0.3);
+    }
+
+    .chart-wrapper {
+        position: relative;
+        width: 100%;
+        height: 250px;
+        margin-bottom: 15px;
+        background: #fafbfc;
+        border-radius: 8px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .chart-wrapper canvas {
+        display: block;
+        max-width: 100%;
     }
 
     /* CHART SECTION */
@@ -292,7 +310,7 @@
 
     .section-title {
         font-size: 20px;
-        color: #2c2f7e;
+        color: #0a978e;
         margin: 0 0 25px 0;
         font-weight: 700;
         display: flex;
@@ -304,7 +322,7 @@
         content: '';
         width: 4px;
         height: 24px;
-        background: linear-gradient(135deg, #2c2f7e, #4a55d4);
+        background: linear-gradient(135deg, #0a978e, #0a978e);
         border-radius: 2px;
     }
 
@@ -324,7 +342,7 @@
 
     .chart-box h4 {
         font-size: 16px;
-        color: #2c2f7e;
+        color: #0a978e;
         margin-bottom: 20px;
         font-weight: 600;
         text-align: center;
@@ -382,7 +400,7 @@
 
     .legend-percent {
         font-weight: 600;
-        color: #2c2f7e;
+        color: #0a978e;
         margin-left: auto;
     }
 
@@ -883,6 +901,13 @@ foreach ($applinks as $app) {
                     <div class="menu-no-data">Belum ada data pantauan</div>
                 @endif
                 
+                <!-- CHART HARIAN -->
+                @if(isset($appChartData[$app->id]))
+                <div class="chart-wrapper">
+                    <canvas id="chart-{{ $app->id }}"></canvas>
+                </div>
+                @endif
+                
                 <a href="{{ $app->url }}" target="_blank" class="btn-visit">
                     Kunjungi Website
                 </a>
@@ -899,5 +924,193 @@ foreach ($applinks as $app) {
     </div>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @foreach($appChartData as $appId => $data)
+            @php
+                // Build chart series from daily counts
+                $chartLabels = [];
+                $hijauSeries = [];
+                $kuningSeries = [];
+                $merahSeries = [];
+
+                foreach ($data['dailyData'] as $index => $daily) {
+                    $chartLabels[] = $index + 1;
+                    $hijauSeries[] = $daily['hijau'] ?? 0;
+                    $kuningSeries[] = $daily['kuning'] ?? 0;
+                    $merahSeries[] = $daily['merah'] ?? 0;
+                }
+            @endphp
+
+            const ctx{{ $appId }} = document.getElementById('chart-{{ $appId }}');
+            if (ctx{{ $appId }}) {
+                const chartLabels{{ $appId }} = {!! json_encode($chartLabels) !!};
+                const hijau{{ $appId }} = {!! json_encode($hijauSeries) !!};
+                const kuning{{ $appId }} = {!! json_encode($kuningSeries) !!};
+                const merah{{ $appId }} = {!! json_encode($merahSeries) !!};
+
+                const chart{{ $appId }} = new Chart(ctx{{ $appId }}, {
+                    type: 'line',
+                    data: {
+                        labels: chartLabels{{ $appId }},
+                        datasets: [
+                            {
+                                label: 'Hijau',
+                                data: hijau{{ $appId }},
+                                borderColor: '#2ecc71',
+                                backgroundColor: 'rgba(46, 204, 113, 0.05)',
+                                fill: false,
+                                tension: 0.2,
+                                stepped: false,
+                                borderWidth: 2,
+                                pointRadius: 3,
+                                pointBackgroundColor: '#2ecc71',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 1,
+                                pointHoverRadius: 5,
+                                pointHoverBorderWidth: 2,
+                                segment: {
+                                    borderDash: [0]
+                                }
+                            },
+                            {
+                                label: 'Kuning',
+                                data: kuning{{ $appId }},
+                                borderColor: '#f1c40f',
+                                backgroundColor: 'rgba(241, 196, 15, 0.05)',
+                                fill: false,
+                                tension: 0.2,
+                                stepped: false,
+                                borderWidth: 2,
+                                pointRadius: 3,
+                                pointBackgroundColor: '#f1c40f',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 1,
+                                pointHoverRadius: 5,
+                                pointHoverBorderWidth: 2,
+                                segment: {
+                                    borderDash: [0]
+                                }
+                            },
+                            {
+                                label: 'Merah',
+                                data: merah{{ $appId }},
+                                borderColor: '#e74c3c',
+                                backgroundColor: 'rgba(231, 76, 60, 0.05)',
+                                fill: false,
+                                tension: 0.2,
+                                stepped: false,
+                                borderWidth: 2,
+                                pointRadius: 3,
+                                pointBackgroundColor: '#e74c3c',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 1,
+                                pointHoverRadius: 5,
+                                pointHoverBorderWidth: 2,
+                                segment: {
+                                    borderDash: [0]
+                                }
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        devicePixelRatio: 1,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                align: 'center',
+                                labels: {
+                                    font: {
+                                        size: 11,
+                                        weight: 'bold'
+                                    },
+                                    padding: 10,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                    boxWidth: 8,
+                                    boxHeight: 8
+                                }
+                            },
+                            title: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0,0,0,0.8)',
+                                padding: 10,
+                                titleFont: { size: 12, weight: 'bold' },
+                                bodyFont: { size: 11 },
+                                borderColor: '#fff',
+                                borderWidth: 1,
+                                callbacks: {
+                                    title: function(context) {
+                                        return 'Hari ke-' + context[0].label;
+                                    },
+                                    label: function(context) {
+                                        const label = context.dataset.label || '';
+                                        const value = context.parsed.y || 0;
+                                        return label + ': ' + value + ' data';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: undefined,
+                                    font: {
+                                        size: 10
+                                    },
+                                    callback: function(value) {
+                                        return Math.round(value);
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Jumlah Monitoring',
+                                    font: {
+                                        size: 11,
+                                        weight: 'bold'
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.08)',
+                                    drawBorder: true,
+                                    drawTicks: false
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Hari ke-n',
+                                    font: {
+                                        size: 11,
+                                        weight: 'bold'
+                                    }
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 9
+                                    },
+                                    maxRotation: 0,
+                                    minRotation: 0,
+                                    maxTicksLimit: 10
+                                },
+                                grid: {
+                                    display: false,
+                                    drawBorder: true
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        @endforeach
+    });
+</script>
 
 @endsection

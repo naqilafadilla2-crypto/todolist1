@@ -5,7 +5,7 @@
         }
 
         .rack-management-header {
-            background: linear-gradient(135deg, #2c2f7e 0%, #4a55d4 100%);
+            background: linear-gradient(135deg, #0a978e 0%, #0a978e 100%);
             color: white;
             padding: 30px;
             border-radius: 12px;
@@ -62,7 +62,7 @@
         }
 
         .btn-add-device {
-            background: linear-gradient(135deg, #2c2f7e 0%, #1a1d4d 100%);
+            background: linear-gradient(135deg, #0a978e 0%, #1a1d4d 100%);
         }
 
         .rack-container {
@@ -95,7 +95,7 @@
             content: '';
             width: 4px;
             height: 20px;
-            background: linear-gradient(135deg, #2c2f7e, #4a55d4);
+            background: linear-gradient(135deg, #0a978e, #0a978e);
             border-radius: 2px;
         }
 
@@ -777,7 +777,7 @@
         <div class="modal show" wire:click.self="closeReportModal()">
             <div class="modal-content" style="max-width: 950px; max-height: 88vh; overflow-y: auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #e8eaf6;">
-                    <h3 style="margin: 0; color: #2c2f7e;">📊 Laporan Rack Management</h3>
+                    <h3 style="margin: 0; color: #0a978e;">📊 Laporan Rack Management</h3>
                     <button wire:click="closeReportModal()" style="background: #f0f0f0; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; color: #666; transition: all 0.2s ease;"
                             onmouseover="this.style.background='#e0e0e0'"
                             onmouseout="this.style.background='#f0f0f0'">✕ Tutup</button>
@@ -787,8 +787,8 @@
                 <div style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 18px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e8eaf6;">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                         <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #2c2f7e; font-size: 13px; text-transform: uppercase;">Tipe Laporan:</label>
-                            <select wire:model.live="reportType" style="width: 100%; padding: 10px; border: 2px solid #e8eaf6; border-radius: 6px; color: #2c2f7e; font-weight: 600;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #0a978e; font-size: 13px; text-transform: uppercase;">Tipe Laporan:</label>
+                            <select wire:model.live="reportType" style="width: 100%; padding: 10px; border: 2px solid #e8eaf6; border-radius: 6px; color: #0a978e; font-weight: 600;">
                                 <option value="summary">📋 Ringkasan Rack</option>
                                 <option value="devices">🖥️ Daftar Perangkat</option>
                                 <option value="status">✓ Status Perangkat</option>
@@ -796,8 +796,8 @@
                             </select>
                         </div>
                         <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #2c2f7e; font-size: 13px; text-transform: uppercase;">Filter Rack:</label>
-                            <select wire:model.live="reportRackId" style="width: 100%; padding: 10px; border: 2px solid #e8eaf6; border-radius: 6px; color: #2c2f7e; font-weight: 600;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #0a978e; font-size: 13px; text-transform: uppercase;">Filter Rack:</label>
+                            <select wire:model.live="reportRackId" style="width: 100%; padding: 10px; border: 2px solid #e8eaf6; border-radius: 6px; color: #0a978e; font-weight: 600;">
                                 <option value="">Semua Rack</option>
                                 @foreach($racks as $rack)
                                     <option value="{{ $rack->id }}">{{ $rack->name }}</option>
@@ -805,8 +805,8 @@
                             </select>
                         </div>
                         <div style="display: flex; align-items: flex-end;">
-                            <button wire:click="$refresh" style="width: 100%; padding: 10px; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s ease;"
-                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(52, 152, 219, 0.3)'"
+                            <button wire:click="$refresh" style="width: 100%; padding: 10px; background: #0a978e; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s ease;"
+                                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(10, 151, 142, 0.3)'"
                                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                                 🔄 Refresh
                             </button>
@@ -822,7 +822,7 @@
                             <div style="background: white; border-radius: 5px; overflow: hidden;">
                                 <table style="width: 100%; border-collapse: collapse;">
                                     <thead>
-                                        <tr style="background: #2c2f7e; color: white;">
+                                        <tr style="background: #0a978e; color: white;">
                                             <th style="padding: 12px; text-align: left;">Rack</th>
                                             <th style="padding: 12px; text-align: center;">Total Unit</th>
                                             <th style="padding: 12px; text-align: center;">Unit Terpakai</th>

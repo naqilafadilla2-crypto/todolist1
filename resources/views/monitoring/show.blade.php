@@ -6,19 +6,19 @@
 <style>
     .page-container { max-width: 900px; margin: auto; background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
     .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .btn-back { background: #2c2f7e; color: #fff; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-size: 14px; }
+    .btn-back { background: #0a978e; color: #fff; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-size: 14px; }
     .field { margin-bottom: 14px; }
-    .label { font-weight: 600; color: #2c2f7e; margin-bottom: 6px; }
+    .label { font-weight: 600; color: #0a978e; margin-bottom: 6px; }
     .value { background: #f6f7fb; padding: 10px 12px; border-radius: 8px; }
     .file-image { width: 180px; height: 180px; object-fit: cover; border-radius: 8px; border: 1px solid #e1e4f0; display:block; }
-    .file-link { color: #2c2f7e; text-decoration: none; font-weight: 600; }
+    .file-link { color: #0a978e; text-decoration: none; font-weight: 600; }
     .files-grid { display:flex; flex-wrap:wrap; gap:12px; }
     .file-card { border: 1px solid #e1e4f0; padding: 10px; border-radius: 8px; background:#fafbff; }
 </style>
 
 <div class="page-container">
     <div class="page-header">
-        <h3 style="margin:0;color:#2c2f7e;">Detail Monitoring</h3>
+        <h3 style="margin:0;color:#0a978e;">Detail Monitoring</h3>
         <div style="display:flex;gap:8px;">
             <a href="{{ route('monitoring.index') }}" class="btn-back">Kembali</a>
             <a href="{{ route('monitoring.edit', $monitoring->id) }}" class="btn-back" style="background:#f1c40f;color:#000;">Edit</a>

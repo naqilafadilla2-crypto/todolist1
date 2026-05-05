@@ -18,13 +18,13 @@
     }
 
     .page-header h2 {
-        color: #2c2f7e;
+        color: #0a978e;
         font-size: 24px;
         margin: 0;
     }
 
     .btn-add {
-        background: #2c2f7e;
+        background: #0a978e;
         color: white;
         padding: 10px 20px;
         border-radius: 8px;
@@ -34,7 +34,7 @@
     }
 
     .btn-add:hover {
-        background: #1f2258;
+        background: #0a978e;
     }
 
     .alert {
@@ -64,7 +64,7 @@
     }
 
     thead {
-        background: #2c2f7e;
+        background: #0a978e;
         color: white;
     }
 

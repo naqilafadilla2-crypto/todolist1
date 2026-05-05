@@ -19,19 +19,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(135deg, #0d0f2a, #1a1f5c);
+        background: linear-gradient(135deg, #0a978e, #084d46);
         overflow: hidden;
     }
 
     /* ===== CARD ===== */
     .container {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(12px);
+        background: linear-gradient(135deg, rgba(10, 151, 142, 0.1), rgba(8, 77, 70, 0.15));
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(10, 151, 142, 0.3);
         padding: 50px 35px;
         border-radius: 20px;
         width: 380px;
         text-align: center;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3), 0 0 30px rgba(10, 151, 142, 0.2);
         position: relative;
         color: #fff;
         animation: fadeUp 1s ease forwards;
@@ -46,7 +47,10 @@
     h2 {
         font-size: 26px;
         font-weight: 800;
-        color: #ffcc00;
+        background: linear-gradient(135deg, #FFD700, #FFC107);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         margin-bottom: 25px;
         letter-spacing: 1px;
         text-transform: uppercase;
@@ -62,13 +66,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        box-shadow: 0 8px 20px rgba(255,204,0,0.2);
+        box-shadow: 0 8px 20px rgba(10, 151, 142, 0.3);
     }
 
     .avatar svg {
         width: 50px;
         height: 50px;
-        fill: #ffcc00;
+        fill: #FFD700;
     }
 
     /* ===== FORM CARD ===== */
@@ -102,8 +106,8 @@
 
     input:focus {
         outline: none;
-        border-color: #ffcc00;
-        box-shadow: 0 0 8px rgba(255,204,0,0.6);
+        border-color: #0a978e;
+        box-shadow: 0 0 8px rgba(10, 151, 142, 0.6);
         background: rgba(255,255,255,0.1);
     }
 
@@ -119,14 +123,14 @@
         cursor: pointer;
         width: 22px;
         height: 22px;
-        fill: #ffcc00;
+        fill: #FFD700;
     }
 
     .btn-login {
         width: 100%;
         padding: 14px;
-        background: linear-gradient(135deg, #ffcc00, #f1b800);
-        color: #000;
+        background: linear-gradient(135deg, #0a978e, #087d77);
+        color: #fff;
         border: none;
         border-radius: 30px;
         font-size: 16px;
@@ -134,17 +138,17 @@
         margin-top: 24px;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 8px 18px rgba(255,204,0,0.4);
+        box-shadow: 0 8px 20px rgba(10, 151, 142, 0.4);
     }
 
     .btn-login:hover {
         transform: translateY(-3px);
-        box-shadow: 0 12px 28px rgba(255,204,0,0.55);
+        box-shadow: 0 12px 28px rgba(10, 151, 142, 0.55), 0 0 15px rgba(255, 215, 0, 0.3);
     }
 
     .btn-login:active {
         transform: translateY(0);
-        box-shadow: 0 6px 12px rgba(255,204,0,0.35);
+        box-shadow: 0 6px 12px rgba(10, 151, 142, 0.35);
     }
 
     .error {
@@ -165,7 +169,7 @@
     .circle.one {
         width: 200px;
         height: 200px;
-        background: #ffcc00;
+        background: #FFD700;
         top: -50px;
         right: -50px;
     }
@@ -173,7 +177,7 @@
     .circle.two {
         width: 140px;
         height: 140px;
-        background: #ff7f50;
+        background: #0a978e;
         bottom: -40px;
         left: -40px;
     }
@@ -236,10 +240,18 @@
     const togglePassword = document.querySelector("#togglePassword");
     const passwordField = document.querySelector("#password-field");
 
+    const eyeIcon = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12c-2.48 0-4.5-2.02-4.5-4.5s2.02-4.5 4.5-4.5 4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5z"/><circle cx="12" cy="12" r="2.5"/>';
+    const eyeOffIcon = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.1 2.8 3.17 5.13 5.78 6.3l-1.36 1.36C3.17 18.88 1.72 16.6 1 14c1.73-4.39 6-7.5 11-7.5 2.04 0 3.95.54 5.63 1.46l-1.46 1.46C15.82 8.25 13.99 7.5 12 7.5c-2.76 0-5 2.24-5 5 0 1.08.36 2.08.96 2.88l-1.45 1.45C5.07 15.04 4.5 13.56 4.5 12c0-3.59 2.91-6.5 6.5-6.5 1.54 0 2.95.55 4.04 1.46l1.43-1.43C17.4 4.83 14.8 4.5 12 4.5z"/>';
+
+    const setPasswordIcon = (type) => {
+        togglePassword.innerHTML = type === 'password' ? eyeIcon : eyeOffIcon;
+        togglePassword.style.fill = type === 'password' ? '#FFD700' : '#0a978e';
+    };
+
     togglePassword.addEventListener("click", function () {
         const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
         passwordField.setAttribute("type", type);
-        this.style.fill = type === "password" ? "#ffcc00" : "#2f3b82";
+        setPasswordIcon(type);
     });
 </script>
 

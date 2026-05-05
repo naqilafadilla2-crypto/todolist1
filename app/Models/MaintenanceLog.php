@@ -11,11 +11,14 @@ class MaintenanceLog extends Model
         'tanggal',
         'pic',
         'foto',
+        'lampiran',
         'keterangan_kesimpulan',
     ];
 
     protected $casts = [
         'tanggal' => 'date',
+        'foto' => 'array', // Cast to array for multiple files
+        'lampiran' => 'array', // Cast to array for multiple files
     ];
 
     public function maintenanceChecklist()

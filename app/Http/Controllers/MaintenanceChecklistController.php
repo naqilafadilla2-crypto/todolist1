@@ -27,10 +27,12 @@ class MaintenanceChecklistController extends Controller
         if ($isPerangkatUpdate) {
             $request->validate([
                 'perangkat' => 'required|string|max:100|unique:maintenance_checklists,perangkat,' . $id,
+                'expired_date' => 'nullable|date',
             ]);
 
             $checklist->update([
                 'perangkat' => $request->perangkat,
+                'expired_date' => $request->expired_date ?: null,
             ]);
 
             return back()->with('success', "Nama perangkat berhasil diubah menjadi '{$request->perangkat}'.");
@@ -103,6 +105,7 @@ class MaintenanceChecklistController extends Controller
     {
         $request->validate([
             'perangkat' => 'required|string|max:100|unique:maintenance_checklists,perangkat',
+            'expired_date' => 'nullable|date',
         ]);
 
         MaintenanceChecklist::create([
@@ -115,6 +118,7 @@ class MaintenanceChecklistController extends Controller
             'checked_q2' => false,
             'checked_q3' => false,
             'checked_q4' => false,
+            'expired_date' => $request->expired_date ?: null,
         ]);
 
         return back()->with('success', "Perangkat '{$request->perangkat}' berhasil ditambahkan.");
@@ -151,20 +155,31 @@ class MaintenanceChecklistController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'pic' => 'required|string|max:100',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'lampiran.*' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120', // Max 5MB for PDF/Office files
             'keterangan_kesimpulan' => 'nullable|string',
         ]);
 
-        $fotoPath = null;
+        $fotoPaths = [];
         if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('maintenance-logs', 'public');
+            foreach ($request->file('foto') as $file) {
+                $fotoPaths[] = $file->store('maintenance-logs', 'public');
+            }
+        }
+
+        $lampiranPaths = [];
+        if ($request->hasFile('lampiran')) {
+            foreach ($request->file('lampiran') as $file) {
+                $lampiranPaths[] = $file->store('maintenance-logs', 'public');
+            }
         }
 
         MaintenanceLog::create([
             'maintenance_checklist_id' => $id,
             'tanggal' => $request->tanggal,
             'pic' => $request->pic,
-            'foto' => $fotoPath,
+            'foto' => $fotoPaths,
+            'lampiran' => $lampiranPaths,
             'keterangan_kesimpulan' => $request->keterangan_kesimpulan,
         ]);
 
@@ -179,19 +194,32 @@ class MaintenanceChecklistController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'pic' => 'required|string|max:100',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'lampiran.*' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120', // Max 5MB for PDF/Office files
             'keterangan_kesimpulan' => 'nullable|string',
         ]);
 
-        $fotoPath = $log->foto;
+        $fotoPaths = $log->foto ?? [];
         if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('maintenance-logs', 'public');
+            $fotoPaths = [];
+            foreach ($request->file('foto') as $file) {
+                $fotoPaths[] = $file->store('maintenance-logs', 'public');
+            }
+        }
+
+        $lampiranPaths = $log->lampiran ?? [];
+        if ($request->hasFile('lampiran')) {
+            $lampiranPaths = [];
+            foreach ($request->file('lampiran') as $file) {
+                $lampiranPaths[] = $file->store('maintenance-logs', 'public');
+            }
         }
 
         $log->update([
             'tanggal' => $request->tanggal,
             'pic' => $request->pic,
-            'foto' => $fotoPath,
+            'foto' => $fotoPaths,
+            'lampiran' => $lampiranPaths,
             'keterangan_kesimpulan' => $request->keterangan_kesimpulan,
         ]);
 

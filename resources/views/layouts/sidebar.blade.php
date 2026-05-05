@@ -7,6 +7,7 @@
 
 @livewireStyles
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
     <style>
         * {
             margin: 0;
@@ -29,7 +30,7 @@
 
     .sidebar {
     width: 260px;
-    background: linear-gradient(180deg, #2c2f7e, #1c1f5c);
+    background: linear-gradient(180deg, #0a978e, #0a978e);
     color: #fff;
     padding: 30px 20px;
     position: relative;
@@ -147,7 +148,7 @@
 
         /* ===== FOOTER FULL WIDTH ===== */
 .main-footer {
-    background: linear-gradient(180deg, #2c2f7e, #1c1f5c);
+    background: linear-gradient(180deg, #0a978e, #0a978e);
     color: #e6e8ff;
     padding: 50px 0 20px;
 }
@@ -273,7 +274,7 @@
 </div>
 
 <!-- FOOTER -->
-<footer style="background: linear-gradient(180deg, #2c2f7e, #1c1f5c); color: #fff;" class="text-white">
+<footer style="background: linear-gradient(180deg, #0a978e, #0a978e); color: #fff;" class="text-white">
     <div class="px-4 sm:px-6 py-10" style="margin-left: 0;">
         <div class="grid md:grid-cols-3 gap-8 text-sm">
             <div>

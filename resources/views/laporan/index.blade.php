@@ -21,7 +21,7 @@
 
 h3 {
     margin-top: 0;
-    color: #2c2f7e;
+    color: #0a978e;
     font-size: 22px;
 }
 
@@ -42,7 +42,7 @@ h3 {
 .filter-item label {
     font-size: 13px;
     font-weight: 600;
-    color: #2c2f7e;
+    color: #0a978e;
     margin-bottom: 6px;
 }
 
@@ -57,7 +57,7 @@ h3 {
 
 .filter-item input:focus {
     outline: none;
-    border-color: #2c2f7e;
+    border-color: #0a978e;
     box-shadow: 0 0 0 3px rgba(44,47,126,0.15);
 }
 
@@ -82,7 +82,7 @@ h3 {
 }
 
 .btn-primary {
-    background: #2c2f7e;
+    background: #0a978e;
     color: #fff;
 }
 
@@ -139,7 +139,7 @@ table {
 }
 
 thead {
-    background: #2c2f7e;
+    background: #0a978e;
     color: #fff;
 }
 
@@ -185,7 +185,7 @@ tbody tr:hover {
 
 .page-btn {
     padding: 10px 20px;
-    background: #2c2f7e;
+    background: #0a978e;
     color: white;
     border-radius: 10px;
     text-decoration: none;
@@ -194,13 +194,61 @@ tbody tr:hover {
 }
 
 .page-btn:hover {
-    background: #1f2258;
+    background: #0a978e;
 }
 
 .page-btn.disabled {
     background: #ccc;
     pointer-events: none;
     color: #666;
+}
+
+/* ===== CHART (seperti contoh) ===== */
+.laporan-chart-wrap {
+    margin: 10px 0 24px;
+}
+.laporan-chart-box {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.laporan-chart-canvas {
+    flex: 1;
+    min-width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    padding: 20px 24px;
+    height: 320px;
+}
+.laporan-chart-legend {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.laporan-legend-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.laporan-legend-swatch {
+    width: 56px;
+    height: 22px;
+    border-radius: 3px;
+}
+.laporan-legend-hijau { background: #2ecc71; }
+.laporan-legend-kuning { background: #f1c40f; }
+.laporan-legend-merah { background: #e74c3c; }
+.laporan-chart-title {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #0a978e;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -217,18 +265,50 @@ tbody tr:hover {
     .status-box span {
         font-size: 24px;
     }
+
+    .badge.merah:hover{
+    cursor:pointer;
+    transform:scale(1.05);
+}
 }
 </style>
 
 @php
-    $totalHijau  = $monitorings->where('status', 'hijau')->count();
-    $totalKuning = $monitorings->where('status', 'kuning')->count();
-    $totalMerah  = $monitorings->where('status', 'merah')->count();
+    // Gunakan data dari controller (total dari grafik)
+    $totalHijau  = $totalHijau ?? 0;
+    $totalKuning = $totalKuning ?? 0;
+    $totalMerah  = $totalMerah ?? 0;
 @endphp
 
 <div class="page-container">
     <div class="card">
         <h3>Laporan Monitoring</h3>
+
+        <!-- GRAFIK PANTAU -->
+        <div class="laporan-chart-wrap">
+            <div class="laporan-chart-box">
+                <div class="laporan-chart-canvas">
+                    <canvas id="laporanPantauChart" style="width:100%;height:100%;"></canvas>
+                </div>
+                <div class="laporan-chart-legend">
+                    <div class="laporan-legend-row">
+                        <span class="laporan-legend-swatch laporan-legend-hijau"></span>
+                        <span>Hijau (baik)</span>
+                    </div>
+                    <div class="laporan-legend-row">
+                        <span class="laporan-legend-swatch laporan-legend-kuning"></span>
+                        <span>Kuning (perlu perhatian)</span>
+                    </div>
+                    <div class="laporan-legend-row">
+                        <span class="laporan-legend-swatch laporan-legend-merah"></span>
+                        <span>Merah (bermasalah)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="laporan-chart-title">
+                {{ $chartTitle ?? 'Grafik Pantau' }}
+            </div>
+        </div>
 
         <!-- RINGKASAN STATUS -->
         <div class="status-summary">
@@ -260,6 +340,12 @@ tbody tr:hover {
                     <input type="month" name="bulan"
                            value="{{ request('bulan', $bulan) }}"
                            id="bulanInput">
+                </div>
+                <div class="filter-item" id="tanggalFilter" style="display: none;">
+                    <label>Tanggal</label>
+                    <input type="date" name="tanggal"
+                           value="{{ request('tanggal', now()->toDateString()) }}"
+                           id="tanggalInput">
                 </div>                
                 <div class="filter-action">
                     <button type="submit" class="btn btn-primary">Terapkan</button>
@@ -269,7 +355,7 @@ tbody tr:hover {
 
         <!-- DOWNLOAD SECTION -->
         <div style="margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 12px;">
-            <h4 style="margin: 0 0 15px 0; color: #2c2f7e;">Download Laporan</h4>
+            <h4 style="margin: 0 0 15px 0; color: #0a978e;">Download Laporan</h4>
             <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: end;">
                 <div class="filter-item" style="min-width: 150px;">
                     <label>Format</label>
@@ -284,6 +370,7 @@ tbody tr:hover {
                         <option value="bulan">Per Bulan</option>
                         <option value="tahun">Per Tahun</option>
                         <option value="minggu">Per Minggu</option>
+                        <option value="hari">Per Hari</option>
                     </select>
                 </div>
                 <button type="button" onclick="downloadLaporan()" class="btn btn-secondary" style="height: 38px;">
@@ -335,10 +422,18 @@ tbody tr:hover {
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $item->nama_aplikasi }}</td>
                         <td>
-                            <span class="badge {{ $item->status }}">
-                                {{ $item->status }}
-                            </span>
-                        </td>
+@if($item->status == 'merah')
+    <a href="{{ route('monitoring.show', $item->id) }}" style="text-decoration:none;">
+        <span class="badge merah">
+            {{ $item->status }}
+        </span>
+    </a>
+@else
+    <span class="badge {{ $item->status }}">
+        {{ $item->status }}
+    </span>
+@endif
+</td>
                         <td>
                             {{ $item->created_at
                                 ? $item->created_at->timezone('Asia/Jakarta')->format('d/m/Y H:i')
@@ -371,4 +466,130 @@ tbody tr:hover {
         </a>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const el = document.getElementById('laporanPantauChart');
+        if (!el) return;
+
+        const labels = {!! json_encode($chartLabels ?? []) !!};
+        const hijau  = {!! json_encode($chartHijau ?? []) !!};
+        const kuning = {!! json_encode($chartKuning ?? []) !!};
+        const merah  = {!! json_encode($chartMerah ?? []) !!};
+
+        // Hitung nilai maksimum untuk sumbu Y (agar skalanya pas dengan data)
+        const allValues = [...hijau, ...kuning, ...merah];
+        const maxVal = allValues.length ? Math.max(...allValues) : 0;
+        const suggestedMax = maxVal > 0 ? maxVal + 1 : 1;
+
+        new Chart(el, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: 'Hijau',
+                        data: hijau,
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46,204,113,0.04)',
+                        borderWidth: 4,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#2ecc71',
+                        pointBorderWidth: 2,
+                    },
+                    {
+                        label: 'Kuning',
+                        data: kuning,
+                        borderColor: '#f1c40f',
+                        backgroundColor: 'rgba(241,196,15,0.04)',
+                        borderWidth: 4,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#f1c40f',
+                        pointBorderWidth: 2,
+                    },
+                    {
+                        label: 'Merah',
+                        data: merah,
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231,76,60,0.04)',
+                        borderWidth: 4,
+                        fill: false,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#e74c3c',
+                        pointBorderWidth: 2,
+                    },
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'line',
+                            padding: 16,
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: ctx => 'Hari ' + ctx[0].label,
+                            label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Hari' },
+                        grid: {
+                            color: 'rgba(0,0,0,0.04)',
+                            drawBorder: false,
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            stepSize: 1,
+                            beginAtZero: true,
+                        },
+                        title: { display: true, text: 'Jumlah Data' },
+                        suggestedMax: suggestedMax,
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)',
+                            drawBorder: false
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+document.getElementById('periodeSelect').addEventListener('change', function() {
+    const periode = this.value;
+    const bulanFilter = document.getElementById('bulanInput').parentElement;
+    const tanggalFilter = document.getElementById('tanggalFilter');
+    
+    if (periode === 'hari') {
+        bulanFilter.style.display = 'none';
+        tanggalFilter.style.display = 'block';
+    } else {
+        bulanFilter.style.display = 'block';
+        tanggalFilter.style.display = 'none';
+    }
+});
+</script>
 @endsection

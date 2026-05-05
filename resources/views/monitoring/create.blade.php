@@ -19,7 +19,7 @@
 }
 
 .page-header h2 {
-    color: #2c2f7e;
+    color: #0a978e;
     font-size: 24px;
     margin: 0;
 }
@@ -65,7 +65,7 @@ input, select, textarea {
 }
 
 input:focus, select:focus, textarea:focus {
-    border-color: #2c2f7e;
+    border-color: #0a978e;
     outline: none;
 }
 
@@ -145,7 +145,7 @@ textarea {
 
 /* ===== BUTTON & ERROR ===== */
 .btn-submit {
-    background: #2c2f7e;
+    background: #0a978e;
     color: white;
     padding: 12px;
     border: none;
@@ -156,7 +156,7 @@ textarea {
 }
 
 .btn-submit:hover {
-    background: #1f2258;
+    background: #0a978e;
 }
 
 .error {
@@ -177,7 +177,7 @@ textarea {
     height: 100px;
     object-fit: cover;
     border-radius: 8px;
-    border: 2px solid #2c2f7e;
+    border: 2px solid #0a978e;
 }
 
 .help-text {
