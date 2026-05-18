@@ -5,8 +5,8 @@
 @section('content')
 <style>
     .page-container { max-width: 600px; margin:auto; padding:20px; }
-    .page-header { margin-bottom:20px; }
-    .page-header h2 { margin:0 0 10px 0; color:#0a978e; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 16px; }
+    .page-header h2 { margin:0; color:#0a978e; }
     .btn-back { background:#6c757d; color:#fff; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:14px; }
     .card { background:#fff; border-radius:12px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
     .form-group { margin-bottom:16px; }
@@ -23,8 +23,8 @@
 
 <div class="page-container">
     <div class="page-header">
-        <a href="{{ route('applink.index') }}" class="btn-back">← Kembali</a>
         <h2>Edit Aplikasi</h2>
+        <a href="{{ route('applink.index') }}" class="btn-back">← Kembali</a>
     </div>
 
     <div class="card">

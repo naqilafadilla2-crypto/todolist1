@@ -8,6 +8,9 @@ use App\Http\Controllers\AppLinkController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\RackController;
 use App\Http\Controllers\MaintenanceChecklistController;
+use App\Http\Controllers\ChecklistExpiredDateController;
+
+
 
 // Halaman Login Utama (landing page)
 Route::get('/', [LoginController::class, 'loginPage'])->name('login'); 
@@ -87,3 +90,30 @@ Route::middleware(['auth'])->group(function () {
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+
+Route::get('/checklist', [ChecklistExpiredDateController::class, 'index'])
+    ->name('checklist.index');
+
+Route::get('/checklist/laporan', [ChecklistExpiredDateController::class, 'report'])
+    ->name('checklist.report');
+
+Route::get('/checklist/laporan/pdf', [ChecklistExpiredDateController::class, 'pdf'])
+    ->name('checklist.report.pdf');
+
+Route::get('/checklist/laporan/excel', [ChecklistExpiredDateController::class, 'excel'])
+    ->name('checklist.report.excel');
+
+Route::get('/checklist/create', [ChecklistExpiredDateController::class, 'create'])
+    ->name('checklist.create');
+
+Route::post('/checklist/store', [ChecklistExpiredDateController::class, 'store'])
+    ->name('checklist.store');
+
+Route::get('/checklist/{id}/edit', [ChecklistExpiredDateController::class, 'edit'])
+    ->name('checklist.edit');
+
+Route::put('/checklist/{id}', [ChecklistExpiredDateController::class, 'update'])
+    ->name('checklist.update');
+
+Route::delete('/checklist/{id}', [ChecklistExpiredDateController::class, 'destroy'])
+    ->name('checklist.destroy');

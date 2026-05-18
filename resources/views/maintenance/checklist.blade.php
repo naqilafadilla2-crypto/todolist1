@@ -59,7 +59,6 @@
 
     .checklist-table thead {
         background:#0a978e; 
-;
     }
 
     .checklist-table th {
@@ -599,7 +598,7 @@
     <!-- CHECKLIST TABLE -->
     <div class="checklist-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 class="checklist-title" style="margin: 0;">📋 Checklist Perawatan {{ date('Y') }}</h2>
+            <h2 class="checklist-title" style="margin: 0;">Checklist Perawatan {{ date('Y') }}</h2>
             <button type="button" onclick="openAddModal()" style="background: #0a978e; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px;">
                 Tambah Perangkat
             </button>
@@ -865,7 +864,7 @@
 <!-- MODAL TAMBAH/EDIT PERANGKAT -->
 <div id="addModal" class="modal">
     <div class="modal-content">
-        <h3 id="addModalTitle">➕ Tambah Perangkat Baru</h3>
+        <h3 id="addModalTitle">Tambah Perangkat Baru</h3>
         
         <form id="addForm" action="{{ route('maintenance.checklist.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -897,7 +896,7 @@ function openAddModal() {
     form.action = `{{ route('maintenance.checklist.store') }}`;
     document.getElementById('formMethod').value = 'POST';
     
-    document.getElementById('addModalTitle').textContent = '➕ Tambah Perangkat Baru';
+    document.getElementById('addModalTitle').textContent = 'Tambah Perangkat Baru';
     document.getElementById('addModalBtn').textContent = 'Tambah Perangkat';
     document.getElementById('perangkat').value = '';
     document.getElementById('expired_date').value = '';

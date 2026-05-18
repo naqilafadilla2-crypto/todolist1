@@ -67,7 +67,7 @@
         opacity: 0.8;
     }
 
-    /* SUMMARY STATS */
+    /* SUMMARY */
     .summary-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -81,18 +81,28 @@
         border-radius: 16px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         border-left: 4px solid;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .summary-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        transform: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    .summary-card.primary { border-left-color: #2c2f7e; }
-    .summary-card.success { border-left-color: #2ecc71; }
-    .summary-card.warning { border-left-color: #f1c40f; }
-    .summary-card.danger { border-left-color: #e74c3c; }
+    .summary-card.primary {
+        border-left-color: #2c2f7e;
+    }
+
+    .summary-card.success {
+        border-left-color: #2ecc71;
+    }
+
+    .summary-card.warning {
+        border-left-color: #f1c40f;
+    }
+
+    .summary-card.danger {
+        border-left-color: #e74c3c;
+    }
 
     .summary-card-header {
         display: flex;
@@ -109,21 +119,6 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
-
-    .summary-card-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-    }
-
-    .summary-card.primary .summary-card-icon { background: #e8eaf6; color: #2c2f7e; }
-    .summary-card.success .summary-card-icon { background: #e8f5e9; color: #2ecc71; }
-    .summary-card.warning .summary-card-icon { background: #fff9e6; color: #f1c40f; }
-    .summary-card.danger .summary-card-icon { background: #ffebee; color: #e74c3c; }
 
     .summary-card h2 {
         font-size: 36px;
@@ -152,39 +147,28 @@
         gap: 20px;
     }
 
-    .menu-item {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        border-radius: 16px;
-        padding: 24px 20px;
-        text-align: center;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        border: 1px solid #e8eaf6;
-        position: relative;
-        overflow: hidden;
-    }
+   .dashboard-card {
+    border-radius: 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 
-    .menu-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #0a978e, #0a978e);
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
-    }
+    background: transparent;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
 
-    .menu-item:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 32px rgba(44,47,126,0.15);
-        border-color: #0a978e;
-    }
+.dashboard-card::before {
+    display: none;
+}
 
-    .menu-item:hover::before {
-        transform: scaleX(1);
-    }
+.dashboard-card:hover {
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+}
 
     .menu-icon {
         width: 80px;
@@ -204,7 +188,7 @@
         object-fit: contain;
     }
 
-    .menu-item h5 {
+    .dashboard-card h5 {
         font-size: 16px;
         color: #0a978e;
         margin-bottom: 10px;
@@ -224,11 +208,7 @@
         padding: 6px 10px;
         border-radius: 8px;
         background: #f8f9fa;
-        transition: background 0.2s ease;
-    }
-
-    .menu-stat-item:hover {
-        background: #e8eaf6;
+        transition: none;
     }
 
     .menu-stat-label {
@@ -245,9 +225,17 @@
         border-radius: 50%;
     }
 
-    .menu-stat-dot.hijau { background: #2ecc71; }
-    .menu-stat-dot.kuning { background: #f1c40f; }
-    .menu-stat-dot.merah { background: #e74c3c; }
+    .menu-stat-dot.hijau {
+        background: #2ecc71;
+    }
+
+    .menu-stat-dot.kuning {
+        background: #f1c40f;
+    }
+
+    .menu-stat-dot.merah {
+        background: #e74c3c;
+    }
 
     .menu-stat-percent {
         font-weight: 600;
@@ -271,16 +259,15 @@
         font-weight: 600;
         text-decoration: none;
         display: inline-block;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(44, 47, 126, 0.2);
         width: 100%;
         text-align: center;
+        box-shadow: 0 4px 12px rgba(44, 47, 126, 0.2);
+        transition: none;
     }
 
     .btn-visit:hover {
-        background: linear-gradient(135deg, #0a978e 0%, #0a978e 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(44, 47, 126, 0.3);
+        transform: none;
+        box-shadow: 0 4px 12px rgba(44, 47, 126, 0.2);
     }
 
     .chart-wrapper {
@@ -322,125 +309,12 @@
         content: '';
         width: 4px;
         height: 24px;
-        background: linear-gradient(135deg, #0a978e, #0a978e);
+        background: #0a978e;
         border-radius: 2px;
     }
 
-    .chart-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .chart-box {
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-        border-radius: 16px;
-        padding: 30px;
-        border: 1px solid #e8eaf6;
-        min-width: 300px;
-    }
-
-    .chart-box h4 {
-        font-size: 16px;
-        color: #0a978e;
-        margin-bottom: 20px;
-        font-weight: 600;
-        text-align: center;
-    }
-
-    /* PIE CHART */
-    .pie-chart {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        margin: 0 auto 15px;
-        position: relative;
-        background: conic-gradient(
-            #2ecc71 0deg var(--hijau-angle, 0deg),
-            #f1c40f var(--hijau-angle, 0deg) var(--kuning-angle, 0deg),
-            #e74c3c var(--kuning-angle, 0deg) 360deg
-        );
-    }
-
-    .pie-chart::before {
-        content: '';
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        background: white;
-        border-radius: 50%;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .chart-legend {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 15px;
-    }
-
-    .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 13px;
-    }
-
-    .legend-color {
-        width: 16px;
-        height: 16px;
-        border-radius: 4px;
-    }
-
-    .legend-hijau { background: #2ecc71; }
-    .legend-kuning { background: #f1c40f; }
-    .legend-merah { background: #e74c3c; }
-
-    .legend-percent {
-        font-weight: 600;
-        color: #0a978e;
-        margin-left: auto;
-    }
-
-    /* PROGRESS BAR */
-    .progress-bar-container {
-        margin-bottom: 15px;
-    }
-
-    .progress-label {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-        font-size: 12px;
-        color: #666;
-    }
-
-    .progress-bar {
-        height: 25px;
-        border-radius: 12px;
-        overflow: hidden;
-        background: #e0e0e0;
-        position: relative;
-    }
-
     .progress-fill {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 11px;
-        font-weight: 600;
-        transition: width 0.5s ease;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 1200px) {
-        .menu-grid {
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        }
+        transition: none;
     }
 
     @media (max-width: 768px) {
@@ -480,7 +354,6 @@
         }
     }
 </style>
-
 <div class="dashboard-container">
 
     <!-- HEADER -->
@@ -867,7 +740,7 @@ foreach ($applinks as $app) {
                 $image = $app->image ? asset('storage/'.$app->image) : asset('images/bakti.png');
                 $stat = $appStats[$app->id] ?? null;
             @endphp
-            <div class="menu-item">
+            <div class="dashboard-card">
                 <div class="menu-icon">
                     <img src="{{ $image }}" alt="{{ $app->name }}">
                 </div>
@@ -936,7 +809,7 @@ foreach ($applinks as $app) {
                 $merahSeries = [];
 
                 foreach ($data['dailyData'] as $index => $daily) {
-                    $chartLabels[] = $index + 1;
+                    $chartLabels[] = Carbon::parse($daily['date'])->format('d');
                     $hijauSeries[] = $daily['hijau'] ?? 0;
                     $kuningSeries[] = $daily['kuning'] ?? 0;
                     $merahSeries[] = $daily['merah'] ?? 0;
@@ -1047,7 +920,7 @@ foreach ($applinks as $app) {
                                 borderWidth: 1,
                                 callbacks: {
                                     title: function(context) {
-                                        return 'Hari ke-' + context[0].label;
+                                        return 'Tanggal ' + context[0].label;
                                     },
                                     label: function(context) {
                                         const label = context.dataset.label || '';
@@ -1086,7 +959,7 @@ foreach ($applinks as $app) {
                             x: {
                                 title: {
                                     display: true,
-                                    text: 'Hari ke-n',
+                                    text: 'Tanggal',
                                     font: {
                                         size: 11,
                                         weight: 'bold'

@@ -6,7 +6,7 @@
 <style>
     .page-container { max-width: 700px; margin: auto; padding: 20px; }
     .page-header { margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center; }
-    .page-header h2 { color: #0a978e; font-size: 24px; margin: 0 0 10px 0; }
+    .page-header h2 { color: #0a978e; font-size: 24px; margin: 0; }
     .btn-back { background: #6c757d; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; }
     .btn-back:hover { background: #5a6268; }
     .card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
@@ -32,8 +32,8 @@
 
 <div class="page-container">
     <div class="page-header">
-        <a href="{{ route('monitoring.index') }}" class="btn-back">← Kembali</a>
         <h2>Edit Data Pantauan</h2>
+        <a href="{{ route('monitoring.index') }}" class="btn-back">← Kembali</a>
     </div>
 
     <div class="card">

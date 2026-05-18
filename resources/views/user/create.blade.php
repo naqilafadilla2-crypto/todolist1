@@ -11,13 +11,16 @@
     }
 
     .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 20px;
     }
 
     .page-header h2 {
         color: #0a978e;
         font-size: 24px;
-        margin: 0 0 10px 0;
+        margin: 0;
     }
 
     .btn-back {
@@ -94,8 +97,8 @@
 
 <div class="page-container">
     <div class="page-header">
-        <a href="{{ route('user.index') }}" class="btn-back">← Kembali</a>
         <h2>Tambah Pengguna Baru</h2>
+        <a href="{{ route('user.index') }}" class="btn-back">← Kembali</a>
     </div>
 
     <div class="card">

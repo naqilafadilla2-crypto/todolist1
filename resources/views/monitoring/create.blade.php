@@ -13,8 +13,8 @@
 
 .page-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 15px;
     margin-bottom: 20px;
 }
 
@@ -188,8 +188,8 @@ textarea {
 
 <div class="page-container">
     <div class="page-header">
-        <a href="{{ route('monitoring.index') }}" class="btn-back">← Kembali</a>
         <h2>Tambah Data Pantauan</h2>
+        <a href="{{ route('monitoring.index') }}" class="btn-back">← Kembali</a>
     </div>
 
     <div class="card">

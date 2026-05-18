@@ -93,7 +93,6 @@
             text-decoration: none;
         border-radius: 12px;
             font-size: 15px;
-        transition: all 0.25s ease;
         }
 
         .menu a:hover {
@@ -114,6 +113,113 @@
             text-align: center;
         opacity: 0.9;
         }
+
+    /* ===== SUBMENU ===== */
+    .menu-item {
+    width: 100%;
+}
+
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        color: #e6e8ff;
+        border: none;
+        background: none;
+        border-radius: 12px;
+        font-size: 15px;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+    }
+
+    .menu-toggle:hover {
+        background: rgba(255,255,255,0.12);
+        transform: translateX(6px);
+    }
+
+    .menu-toggle.active {
+        background: rgba(255,255,255,0.2);
+        color: #fff;
+        font-weight: 600;
+        box-shadow: inset 4px 0 0 #ffcc00;
+    }
+
+    .menu-toggle .icon {
+        font-size: 18px;
+        width: 26px;
+        text-align: center;
+        opacity: 0.9;
+    }
+
+    .menu-toggle .arrow {
+    margin-left: auto;
+    font-size: 14px;
+}
+
+.arrow {
+    margin-left: auto;
+}
+
+.menu-toggle.expanded .arrow {
+    transform: rotate(180deg);
+}
+   /* ===== SUBMENU ===== */
+
+.submenu {
+    display: none;
+    flex-direction: column;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    padding-left: 18px;
+}
+
+.submenu.show {
+    display: flex;
+}
+
+.submenu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 14px;
+    margin: 4px 0;
+
+    color: #dfe6ff;
+    text-decoration: none;
+
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.submenu a:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateX(4px);
+}
+
+.submenu a.active {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    font-weight: 600;
+}
+
+.submenu a .icon {
+    width: 18px;
+    text-align: center;
+}
+
+.menu-toggle {
+    position: relative;
+}
+
+.menu-toggle .arrow {
+    margin-left: auto;
+    font-size: 12px;
+}
+
 
     /* ===== LOGOUT ===== */
         .logout {
@@ -220,24 +326,55 @@
                     Dasbor
         </a>
 
-        <a href="{{ route('applink.index') }}" class="{{ request()->routeIs('applink.*') ? 'active' : '' }}">
+        <div class="menu-item">
+            <button class="menu-toggle {{ request()->routeIs('applink.*') || request()->routeIs('monitoring.*') && !request()->routeIs('monitoring.user.*') || request()->routeIs('laporan') ? 'active' : '' }} {{ request()->routeIs('applink.*') || request()->routeIs('monitoring.*') && !request()->routeIs('monitoring.user.*') || request()->routeIs('laporan') ? 'expanded' : '' }}" data-menu="kelola">
+                <span class="menu-text">
+        Aplikasi
+    </span>
+
+    <span class="arrow">⌄</span>
+            </button>
+
+            <div class="submenu {{ request()->routeIs('applink.*') || request()->routeIs('monitoring.*') && !request()->routeIs('monitoring.user.*') || request()->routeIs('laporan') ? 'show' : '' }}" id="kelola-submenu">
+                <a href="{{ route('applink.index') }}" class="{{ request()->routeIs('applink.*') ? 'active' : '' }}">
                     Kelola Aplikasi
-        </a>
+                </a>
 
                 <a href="{{ route('monitoring.index') }}" class="{{ request()->routeIs('monitoring.*') && !request()->routeIs('monitoring.user.*') ? 'active' : '' }}">
                     Pantau
-        </a>
+                </a>
 
-        <a href="{{ route('laporan') }}" class="{{ request()->routeIs('laporan') ? 'active' : '' }}">
+                <a href="{{ route('laporan') }}" class="{{ request()->routeIs('laporan') ? 'active' : '' }}">
                     Laporan
-        </a>
+                </a>
+            </div>
+        </div>
+
             <a href="{{ route('rack.index') }}" class="{{ request()->routeIs('rack.*') ? 'active' : '' }}">
                    Kelola Rack
                 </a>
 
             <a href="{{ route('maintenance.checklist.index') }}" class="{{ request()->routeIs('maintenance.*') ? 'active' : '' }}">
-                   Checklist Perawatan
+                   Ceklis Perawatan
                 </a>
+
+            <div class="menu-item">
+                <button class="menu-toggle {{ request()->routeIs('checklist.*') ? 'active expanded' : '' }}" data-menu="checklist">
+                    <span class="menu-text">
+                        Checklist Expired Date
+                    </span>
+                    <span class="arrow">⌄</span>
+                </button>
+
+                <div class="submenu {{ request()->routeIs('checklist.*') ? 'show' : '' }}" id="checklist-submenu">
+                    <a href="{{ route('checklist.index') }}" class="{{ request()->routeIs('checklist.index') ? 'active' : '' }}">
+                        Daftar Checklist Expired Date
+                    </a>
+                    <a href="{{ route('checklist.report') }}" class="{{ request()->routeIs('checklist.report') ? 'active' : '' }}">
+                        Laporan Checklist Expired Date
+                    </a>
+                </div>
+            </div>
 
              <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.*') ? 'active' : '' }}">
                    Pengguna
@@ -311,5 +448,18 @@
     </div>
 </footer>
 @livewireScripts
+
+<script>
+document.querySelectorAll('.menu-toggle').forEach(button => {
+    button.addEventListener('click', function () {
+
+        const submenu = this.nextElementSibling;
+
+        submenu.classList.toggle('show');
+
+        this.classList.toggle('expanded');
+    });
+});
+</script>
 </body>
 </html>
