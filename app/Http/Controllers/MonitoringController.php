@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AppLink;
 use App\Models\Monitoring;
+use App\Models\MonitoringLog;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
@@ -80,6 +81,10 @@ class MonitoringController extends Controller
 
         $applink = AppLink::findOrFail($request->applink_id);
 
+        MonitoringLog::create([
+            'aktivitas' => 'Menambah monitoring aplikasi: ' . $applink->name,
+        ]);
+
         $data = [
             'nama_aplikasi' => $applink->name,
             'status'        => $request->status,
@@ -129,6 +134,10 @@ class MonitoringController extends Controller
 
         $applink = AppLink::findOrFail($request->applink_id);
 
+        MonitoringLog::create([
+            'aktivitas' => 'Mengubah monitoring aplikasi: ' . $applink->name,
+        ]);
+
         $data = [
             'nama_aplikasi' => $applink->name,
             'status'        => $request->status,
@@ -171,6 +180,10 @@ class MonitoringController extends Controller
                 }
             }
         }
+
+        MonitoringLog::create([
+            'aktivitas' => 'Menghapus monitoring aplikasi: ' . $monitoring->nama_aplikasi,
+        ]);
         
         $monitoring->delete();
 

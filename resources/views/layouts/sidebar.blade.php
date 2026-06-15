@@ -39,7 +39,7 @@
     flex-direction: column;
     /* HAPUS justify-content: space-between */
 
-    min-height: 100vh; /* 🔥 ini yang bikin biru tetap penuh */
+    min-height: 100vh; /* ini yang bikin biru tetap penuh */
     box-shadow: 4px 0 20px rgba(0,0,0,0.3);
 }
 
@@ -376,9 +376,15 @@
                 </div>
             </div>
 
-             <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.*') ? 'active' : '' }}">
+            <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.*') ? 'active' : '' }}">
                    Pengguna
-                </a>    
+            </a>
+
+            <div class="menu-item" style="margin-top:4px;">
+                <a href="{{ route('activity-log.index') }}" class="{{ request()->routeIs('activity-log.*') ? 'active' : '' }}">
+                    Log Aktivitas
+                </a>
+            </div>
             @else
 
             <a href="{{ route('menu') }}" class="{{ request()->routeIs('menu') ? 'active' : '' }}">

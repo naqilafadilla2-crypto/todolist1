@@ -9,6 +9,7 @@ use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\RackController;
 use App\Http\Controllers\MaintenanceChecklistController;
 use App\Http\Controllers\ChecklistExpiredDateController;
+use App\Http\Controllers\ActivityLogController;
 
 
 
@@ -86,6 +87,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/maintenance-checklist/{id}/logs', [MaintenanceChecklistController::class, 'storeLog'])->name('maintenance.log.store');
     Route::put('/maintenance-checklist/{id}/logs/{logId}', [MaintenanceChecklistController::class, 'updateLog'])->name('maintenance.log.update');
     Route::delete('/maintenance-checklist/{id}/logs/{logId}', [MaintenanceChecklistController::class, 'deleteLog'])->name('maintenance.log.delete');
+    
+    // Activity log routes
+    Route::get('/activity-log', [ActivityLogController::class, 'index'])->name('activity-log.index');
+    Route::delete('/activity-log/{id}', [ActivityLogController::class, 'destroy'])->name('activity-log.destroy');
+    Route::post('/activity-log/clear-all', [ActivityLogController::class, 'clearAll'])->name('activity-log.clear-all');
     
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
