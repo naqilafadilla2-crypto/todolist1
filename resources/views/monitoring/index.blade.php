@@ -183,7 +183,7 @@
         @empty
             <tr>
                 <td colspan="7" style="text-align:center;padding:40px;color:#999;">
-                    Belum ada data monitoring
+                    belum ada data monitoring
                 </td>
             </tr>
         @endforelse
