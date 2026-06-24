@@ -2,19 +2,112 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MaintenanceChecklistReportExport;
 use App\Models\MaintenanceChecklist;
 use App\Models\MaintenanceLog;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MaintenanceChecklistController extends Controller
 {
     public function index()
     {
         $checklists = MaintenanceChecklist::with('maintenanceLogs')
-        ->orderBy('perangkat')
-        ->get();
+            ->orderBy('perangkat')
+            ->get();
 
-    return view('maintenance.checklist', compact('checklists'));
+        return view('maintenance.checklist', compact('checklists'));
+    }
+
+    public function report(Request $request)
+    {
+        $query = MaintenanceChecklist::with('maintenanceLogs');
+
+        if ($request->filled('perangkat')) {
+            $query->where('perangkat', 'like', '%' . $request->perangkat . '%');
+        }
+
+        if ($request->filled('status')) {
+            $status = $request->status;
+            if (in_array($status, ['belum', 'proses', 'selesai'], true)) {
+                $query->where(function ($q) use ($status) {
+                    $q->where('status_q1', $status)
+                        ->orWhere('status_q2', $status)
+                        ->orWhere('status_q3', $status)
+                        ->orWhere('status_q4', $status);
+                });
+            }
+        }
+
+        $checklists = $query->orderBy('perangkat')->get();
+
+        $summary = [
+            'total' => $checklists->count(),
+            'q1_done' => $checklists->filter(fn($item) => $item->status_q1 === 'selesai')->count(),
+            'q2_done' => $checklists->filter(fn($item) => $item->status_q2 === 'selesai')->count(),
+            'q3_done' => $checklists->filter(fn($item) => $item->status_q3 === 'selesai')->count(),
+            'q4_done' => $checklists->filter(fn($item) => $item->status_q4 === 'selesai')->count(),
+        ];
+
+        return view('maintenance.report', compact('checklists', 'summary'));
+    }
+
+    public function pdf(Request $request)
+    {
+        $query = MaintenanceChecklist::with('maintenanceLogs');
+
+        if ($request->filled('perangkat')) {
+            $query->where('perangkat', 'like', '%' . $request->perangkat . '%');
+        }
+
+        if ($request->filled('status')) {
+            $status = $request->status;
+            if (in_array($status, ['belum', 'proses', 'selesai'], true)) {
+                $query->where(function ($q) use ($status) {
+                    $q->where('status_q1', $status)
+                        ->orWhere('status_q2', $status)
+                        ->orWhere('status_q3', $status)
+                        ->orWhere('status_q4', $status);
+                });
+            }
+        }
+
+        $checklists = $query->orderBy('perangkat')->get();
+
+        $pdf = Pdf::loadView('maintenance.report-pdf', [
+            'checklists' => $checklists,
+        ]);
+
+        return $pdf->download('laporan-checklist-perawatan-' . now()->format('YmdHis') . '.pdf');
+    }
+
+    public function excel(Request $request)
+    {
+        $query = MaintenanceChecklist::with('maintenanceLogs');
+
+        if ($request->filled('perangkat')) {
+            $query->where('perangkat', 'like', '%' . $request->perangkat . '%');
+        }
+
+        if ($request->filled('status')) {
+            $status = $request->status;
+            if (in_array($status, ['belum', 'proses', 'selesai'], true)) {
+                $query->where(function ($q) use ($status) {
+                    $q->where('status_q1', $status)
+                        ->orWhere('status_q2', $status)
+                        ->orWhere('status_q3', $status)
+                        ->orWhere('status_q4', $status);
+                });
+            }
+        }
+
+        $checklists = $query->orderBy('perangkat')->get();
+
+        return Excel::download(
+            new MaintenanceChecklistReportExport($checklists),
+            'laporan-checklist-perawatan-' . now()->format('YmdHis') . '.xlsx'
+        );
     }
 
     public function update(Request $request, $id)

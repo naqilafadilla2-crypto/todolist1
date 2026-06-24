@@ -350,13 +350,41 @@
             </div>
         </div>
 
-            <a href="{{ route('rack.index') }}" class="{{ request()->routeIs('rack.*') ? 'active' : '' }}">
-                   Kelola Rack
-                </a>
+            <div class="menu-item">
+                <button class="menu-toggle {{ request()->routeIs('rack.*') ? 'active expanded' : '' }}" data-menu="rack">
+                    <span class="menu-text">
+                        Rack
+                    </span>
+                    <span class="arrow">⌄</span>
+                </button>
 
-            <a href="{{ route('maintenance.checklist.index') }}" class="{{ request()->routeIs('maintenance.*') ? 'active' : '' }}">
-                   Ceklis Perawatan
-                </a>
+                <div class="submenu {{ request()->routeIs('rack.*') ? 'show' : '' }}" id="rack-submenu">
+                    <a href="{{ route('rack.index') }}" class="{{ request()->routeIs('rack.index') ? 'active' : '' }}">
+                        Kelola Rack
+                    </a>
+                    <a href="{{ route('rack.report') }}" class="{{ request()->routeIs('rack.report') ? 'active' : '' }}">
+                        Laporan Rack
+                    </a>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <button class="menu-toggle {{ request()->routeIs('maintenance.checklist.*') ? 'active expanded' : '' }}" data-menu="maintenance">
+                    <span class="menu-text">
+                        Checklist Perawatan
+                    </span>
+                    <span class="arrow">⌄</span>
+                </button>
+
+                <div class="submenu {{ request()->routeIs('maintenance.checklist.*') ? 'show' : '' }}" id="maintenance-submenu">
+                    <a href="{{ route('maintenance.checklist.index') }}" class="{{ request()->routeIs('maintenance.checklist.index') ? 'active' : '' }}">
+                        Checklist Perawatan
+                    </a>
+                    <a href="{{ route('maintenance.checklist.report') }}" class="{{ request()->routeIs('maintenance.checklist.report') ? 'active' : '' }}">
+                        Laporan Perawatan
+                    </a>
+                </div>
+            </div>
 
             <div class="menu-item">
                 <button class="menu-toggle {{ request()->routeIs('checklist.*') ? 'active expanded' : '' }}" data-menu="checklist">
@@ -364,7 +392,6 @@
                         Checklist Expired Date
                     </span>
                     <span class="arrow">⌄</span>
-                </button>
 
                 <div class="submenu {{ request()->routeIs('checklist.*') ? 'show' : '' }}" id="checklist-submenu">
                     <a href="{{ route('checklist.index') }}" class="{{ request()->routeIs('checklist.index') ? 'active' : '' }}">

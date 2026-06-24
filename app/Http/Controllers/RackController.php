@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rack;
+use App\Exports\DeviceLogExport;
+use App\Exports\RackReportExport;
 use App\Models\Device;
 use App\Models\DeviceLog;
-use App\Exports\DeviceLogExport;
+use App\Models\Rack;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Maatwebsite\Excel\Facades\Excel;
@@ -71,5 +73,70 @@ class RackController extends Controller
         $filename = 'riwayat-log-' . str_replace(' ', '-', strtolower($device->name)) . '-' . now()->format('Y-m-d') . '.xlsx';
 
         return Excel::download(new DeviceLogExport($logs, $device->name), $filename);
+    }
+
+    public function report(Request $request)
+    {
+        $query = Rack::with('devices');
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $racks = $query->get();
+
+        $totalRacks = $racks->count();
+        $totalDevices = $racks->sum(function ($rack) {
+            return $rack->devices->count();
+        });
+        $onlineDevices = $racks->sum(function ($rack) {
+            return $rack->devices->where('status', 'online')->count();
+        });
+        $offlineDevices = $totalDevices - $onlineDevices;
+        $onlineRacks = $racks->where('status_online', 'online')->count();
+        $offlineRacks = $totalRacks - $onlineRacks;
+
+        return view('rack.report', compact(
+            'racks',
+            'totalRacks',
+            'totalDevices',
+            'onlineDevices',
+            'offlineDevices',
+            'onlineRacks',
+            'offlineRacks'
+        ));
+    }
+
+    public function pdf(Request $request)
+    {
+        $query = Rack::with('devices');
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $racks = $query->get();
+
+        $pdf = Pdf::loadView('rack.report-pdf', [
+            'racks' => $racks,
+        ]);
+
+        return $pdf->download('laporan-rack-' . now()->format('YmdHis') . '.pdf');
+    }
+
+    public function excel(Request $request)
+    {
+        $query = Rack::with('devices');
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $racks = $query->get();
+
+        return Excel::download(
+            new RackReportExport($racks),
+            'laporan-rack-' . now()->format('YmdHis') . '.xlsx'
+        );
     }
 }

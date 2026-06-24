@@ -67,6 +67,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/rack', [RackController::class, 'index'])->name('rack.index');
     Route::post('/rack', [RackController::class, 'store'])->name('rack.store');
     Route::delete('/rack/{id}', [RackController::class, 'destroy'])->name('rack.destroy');
+    Route::get('/rack/report', [RackController::class, 'report'])->name('rack.report');
+    Route::get('/rack/report/pdf', [RackController::class, 'pdf'])->name('rack.report.pdf');
+    Route::get('/rack/report/excel', [RackController::class, 'excel'])->name('rack.report.excel');
     
     // Device status check routes
     Route::post('/rack/devices/check-all', [RackController::class, 'checkAllDevices'])->name('rack.devices.check-all');
@@ -77,6 +80,9 @@ Route::middleware(['auth'])->group(function () {
     
     // Maintenance checklist routes
     Route::get('/maintenance-checklist', [MaintenanceChecklistController::class, 'index'])->name('maintenance.checklist.index');
+    Route::get('/maintenance-checklist/report', [MaintenanceChecklistController::class, 'report'])->name('maintenance.checklist.report');
+    Route::get('/maintenance-checklist/report/pdf', [MaintenanceChecklistController::class, 'pdf'])->name('maintenance.checklist.report.pdf');
+    Route::get('/maintenance-checklist/report/excel', [MaintenanceChecklistController::class, 'excel'])->name('maintenance.checklist.report.excel');
     Route::put('/maintenance-checklist/{id}', [MaintenanceChecklistController::class, 'update'])->name('maintenance.checklist.update');
     Route::put('/maintenance-checklist/{id}/keterangan', [MaintenanceChecklistController::class, 'updateKeterangan'])->name('maintenance.checklist.keterangan');
     Route::put('/maintenance-checklist/{id}/checkbox', [MaintenanceChecklistController::class, 'toggleCheckbox'])->name('maintenance.checklist.checkbox');
